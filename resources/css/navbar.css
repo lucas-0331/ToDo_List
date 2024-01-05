@@ -1,0 +1,8 @@
+@media (max-width: 767px) {
+    #navbar-cta {
+        display: none;
+    }
+    #navbar-cta.show {
+        display: block;
+    }
+}

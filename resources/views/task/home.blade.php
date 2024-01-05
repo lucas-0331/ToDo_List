@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow-md ">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             @if(isset($tasks))
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -41,7 +41,7 @@
                             {{ $task->name }}
                         </th>
                         <td class="px-24 py-4">
-                            {{ Str::limit($task->description, 50) }}
+                            {{ Str::limit($task->description, 60) }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $task->date }}
@@ -50,7 +50,11 @@
                             <img src="{{ $task->image }}" alt="" class="w-20">
                         </td>
                         <td class="flex items-center px-6 py-10">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                            <a href="{{ route('details', $task->id) }}" class="font-medium text-white-600 dark:text-white-500 hover:underline">
+                                <span class="material-symbols-outlined">
+                                    visibility
+                                </span>
+                            </a><a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline ms-3">
                                 <span class="material-symbols-outlined">
                                     edit_square
                                 </span>
@@ -76,5 +80,4 @@
 @endsection
 
 @push('google-material-symbols')
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 @endpush
