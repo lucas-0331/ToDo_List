@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,13 @@ use App\Http\Controllers\TaskController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-Route::resource('task', TaskController::class)->except(['destroy', 'edit'])->names('task');
+//Route::resource('admin', TaskController::class)->except(['destroy', 'edit'])->names('task');
+Route::resource('admin', TaskController::class)->names('admin');
 
+Route::get('/', [SiteController::class, 'index'])->name('index');
+
+Route::get('/task/{id}', [SiteController::class, 'details'])->name('details');

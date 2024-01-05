@@ -12,8 +12,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::query()->paginate(10);
-        return view('task.home', compact('tasks'));
+        //
     }
 
     /**
