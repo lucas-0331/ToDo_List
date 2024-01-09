@@ -74,7 +74,8 @@
                                 <span class="material-symbols-outlined">
                                     visibility
                                 </span>
-                            </a><a href="{{ route('edit', $task->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline ms-3">
+                            </a>
+                            <a href="{{ route('edit', $task->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline ms-3">
                                 <span class="material-symbols-outlined">
                                     edit_square
                                 </span>
