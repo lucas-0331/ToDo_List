@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="../../css/navbar.css">
-    @stack('google-material-symbols')
-    @vite('resources/css/app.css')
+    @vite([
+    'resources/css/app.css',
+    'resources/css/navbar.css',
+    'resources/js/app.js',
+    ])
 </head>
 <body>
 <header>
-
-
     <nav class="bg-white border-gray-200 dark:bg-gray-900">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="{{ route('index') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -23,14 +23,17 @@
             </a>
             <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <a href="#" class="flex items-center">
-                        <span class="material-symbols-outlined">
-                            add
-                        </span>
-                        <span class="ms-2">
-                            New Task
-                        </span>
-                    </a>
+                    @section('button-nav-right')
+                        <a href="#" class="flex items-center">
+                            <span class="material-symbols-outlined">
+                                add
+                            </span>
+                            <span class="ms-2">
+                                New Task
+                            </span>
+                        </a>
+                    @endsection
+                    @yield('button-nav-right')
                 </button>
                 <button id="triggerEl" data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -55,6 +58,5 @@
     </nav>
 </header>
 @yield('content')
-<script src="../../js/navbar.js"></script>
 </body>
 </html>
