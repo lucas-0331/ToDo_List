@@ -27,3 +27,9 @@ Route::get('/task/all/{id_user}', [SiteController::class, 'id_user'])->name('id_
 Route::get('/task/edit/{id}', [SiteController::class, 'edit'])->name('edit');
 
 Route::post('/task/edited', [SiteController::class, 'edited'])->name('edited');
+
+Route::post('/update_status/{id}', [SiteController::class, 'update_status'])->name('update_status');
+
+Route::delete('/delete_task/{id}', [SiteController::class, 'delete_task'])->name('delete_task');
+
+Route::match(['get', 'post'], '/create_new_task/', [SiteController::class, 'create_task'])->name('create_task');
