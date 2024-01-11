@@ -9,7 +9,11 @@
                 <h1 class="">{{ ucfirst($task->name) }}</h1>
             </div>
             <div class="flex items-center justify-center">
-                <img src="{{ $task->image }}" alt="{{ $task->name }}" class="rounded-full">
+                @if(Str::startsWith($task->image, ['http://', 'https://']))
+                    <img src="{{ $task->image }}" alt="Image URL" class="w-1 rounded-full">
+                @else
+                    <img src="{{ asset('storage/' . $task->image) }}" alt="Image PATH" class="w-1/3 rounded-full">
+                @endif
             </div>
             <div class="flex-col h-full">
                 <div class="flex items-start">
