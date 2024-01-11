@@ -1,14 +1,14 @@
 @extends('task.layout')
 
-@section('title', 'Edit')
+@section('title', 'Edit Task')
 
 @section('button-nav-right')
-    <a href="#" class="flex items-center" onclick="submit_form()">
+    <a href="#" class="flex items-center" onclick="submit_form_edit()">
         <span class="material-symbols-outlined">
             save
         </span>
         <span class="ms-2">
-            Salvar
+            Save
         </span>
     </a>
 @endsection
@@ -38,9 +38,13 @@
                         <input type="date" id="task_date" name="task_date" value="{{ $task->date }}" class="w-full border-2 border-gray-500 rounded p-2 focus:border-transparent dark:bg-gray-700">
                     </div>
                     <div class="flex justify-between items-center m-5 mt-10">
-                        <img src="{{ $task->image }}" alt="{{ $task->name }}" class="w-40 rounded-full">
+                        @if(Str::startsWith($task->image, ['http://', 'https://']))
+                            <img src="{{ $task->image }}" alt="{{ $task->name }}" class="w-40 rounded-full">
+                        @else
+                            <img src="{{ asset('storage/' . $task->image) }}" alt="{{ $task->name }}" class="w-40 rounded-full">
+                        @endif
                         <label for="task_image" class="mx-2"></label>
-                        <input type="file" id="task_image" name="task_image" value="{{ $task->date }}" class="w-full border-2 border-gray-500 rounded p-2 focus:border-transparent dark:bg-gray-700">
+                        <input type="file" id="task_image" name="task_image" class="w-full border-2 border-gray-500 rounded p-2 focus:border-transparent dark:bg-gray-700">
                     </div>
                 </form>
             </div>
