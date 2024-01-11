@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use function Termwind\render;
 
 class SiteController extends Controller
 {
@@ -63,5 +64,60 @@ class SiteController extends Controller
         }
         $task->save();
         return redirect()->route('edit', $task->id)->with('success', 'Edited with success!');
+    }
+
+    public function update_status($id)
+    {
+        $task = Task::query()->where('id', $id)->first();
+        $task->status = !$task->status;
+        $task->save();
+        return redirect()->route('index');
+
+//        return response()->json(['status' => $task->status]);
+    }
+
+    public function delete_task($id)
+    {
+        $task = Task::query()->where('id', $id)->first();
+        $task->delete();
+        return redirect()->route('index')->with('success', 'Your task was successfully deleted');
+    }
+
+    public function create_task(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $request->validate([
+                'task_name' => 'required',
+                'task_description' => 'required',
+                'task_date' => 'required',
+                'task_image' => 'sometimes|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            $task = new Task();
+            $task->name = $request->input('task_name');
+            $task->description = $request->input('task_description');
+            $task->date = $request->input('task_date');
+            $task->status = false;
+            $task->id_user = 1;
+
+            if ($request->hasFile('task_image'))
+            {
+                $image = $request->file('task_image');
+                $path_image = $image->store('img', 'public');
+                $task->image = $path_image;
+            }
+            $task->save();
+
+            return redirect()->route('index')->with('success', 'Your new task has been added successfully');
+        }
+        elseif ($request->isMethod('get'))
+        {
+            return view('task.create_task');
+        }
+    }
+
+    public function about()
+    {
+        return view('task.about');
     }
 }
