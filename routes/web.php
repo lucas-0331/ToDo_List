@@ -30,6 +30,8 @@ Route::post('/task/edited', [SiteController::class, 'edited'])->name('edited');
 
 Route::post('/update_status/{id}', [SiteController::class, 'update_status'])->name('update_status');
 
-Route::delete('/delete_task/{id}', [SiteController::class, 'delete_task'])->name('delete_task');
+Route::get('/delete_task/{id}', [SiteController::class, 'delete_task'])->name('delete_task');
 
 Route::match(['get', 'post'], '/create_new_task/', [SiteController::class, 'create_task'])->name('create_task');
+
+Route::get('/about/', [SiteController::class, 'about'])->name('about');
