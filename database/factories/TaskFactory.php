@@ -26,7 +26,7 @@ class TaskFactory extends Factory
             'status' => fake()->boolean(),
             'image' => fake()->imageUrl(350, 350),
             'date' => fake()->dateTimeBetween($start_date, $end_date),
-            'id_user' => User::pluck('id')->random(),
+//            'id_user' => User::pluck('id')->random(),
         ];
     }
 }

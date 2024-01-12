@@ -3,17 +3,17 @@ $(document).ready(function () {
         let task_id = $(this).attr('id').split('-').pop();
 
         $.ajax({
-            url: '/update_status/' + task_id,
+            url: 'task/' + task_id + '/status/',
             type: 'POST',
             data: {
                 //
             },
             headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
                 if (response.success) {
-                    $('#success_message').text(response.success);
+                    alert('Success!')
                 }
             },
             error: function (error) {

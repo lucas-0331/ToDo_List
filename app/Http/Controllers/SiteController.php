@@ -33,38 +33,11 @@ class SiteController extends Controller
 
     public function edit($id)
     {
-        $task = Task::query()->where('id', $id)->first();
-        return view('task.edit', compact('task'));
+        //
     }
 
     public function edited(Request $request)
-    {
-        $request->validate([
-            'task_id' => 'required',
-            'task_name' => 'required',
-            'task_description' => 'required',
-            'task_date' => 'required',
-            'task_image' => 'sometimes|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-        $task = Task::findOrFail($request->input('task_id'));
-
-        $task->name = $request->input('task_name');
-        $task->description = $request->input('task_description');
-        $task->date = $request->input('task_date');
-
-        if ($request->hasFile('task_image'))
-        {
-            if ($task->image)
-            {
-                Storage::delete($task->image);
-            }
-            $image = $request->file('task_image');
-            $path_image = $image->store('img', 'public');
-            $task->image = $path_image;
-        }
-        $task->save();
-        return redirect()->route('edit', $task->id)->with('success', 'Edited with success!');
-    }
+    {}
 
     public function update_status($id)
     {
@@ -78,10 +51,7 @@ class SiteController extends Controller
 
     public function delete_task($id)
     {
-        $task = Task::query()->where('id', $id)->first();
-        $task->delete();
-        return redirect()->route('index')->with('success', 'Your task was successfully deleted');
-    }
+        }
 
     public function create_task(Request $request)
     {
@@ -106,7 +76,7 @@ class SiteController extends Controller
                 $path_image = $image->store('img', 'public');
                 $task->image = $path_image;
             }
-            $task->save();
+            $task->update();
 
             return redirect()->route('index')->with('success', 'Your new task has been added successfully');
         }

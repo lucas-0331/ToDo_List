@@ -17,7 +17,7 @@
     <div class="grid grid-cols-12 p-5 gap-4 h-screen bg-white dark:text-white border-b dark:bg-gray-800 dark:border-gray-700">
         <div class="grid col-start-2 col-span-10 red rounded-3xl dark:bg-gray-900 justify-center border-2 border-gray-500 bg-white p-10">
             <div class="text-2xl font-bold">
-                <form id="new_task_form" action="{{ route('create_task') }}" method="post" enctype="multipart/form-data" class="flex-col w-full m-2">
+                <form id="new_task_form" action="{{ route('task.store') }}" method="post" enctype="multipart/form-data" class="flex-col w-full m-2">
                     @csrf
                     <div class="block justify-between items-baseline m-5">
                         <label for="task_name" class="mx-2">Task Name: </label>

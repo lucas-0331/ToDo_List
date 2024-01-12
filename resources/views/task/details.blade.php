@@ -19,9 +19,6 @@
                 <div class="flex items-start">
                     {{ $task->description }}
                 </div>
-                <div class="flex items-end mt-auto justify-end">
-                    <a href="{{ route('id_user', $task->id_user) }}">Author: {{ $task->user->name }}</a>
-                </div>
             </div>
             <div class="row-start-3 col-start-2 flex items-center justify-end">
                 {{ $date_format }}

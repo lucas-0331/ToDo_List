@@ -22,7 +22,7 @@
                         <span class="font-bold">{{ $message }}</span>
                     </div>
                 @endif
-                <form id="edit_form" action="{{ route('edited') }}" method="post" enctype="multipart/form-data" class="flex-col w-full m-2">
+                <form id="edit_form" action="{{ route('task.update', $task->id) }}" method="post" enctype="multipart/form-data" class="flex-col w-full m-2">
                     @csrf
                     <div class="block justify-between items-baseline m-5">
                         <label for="task_name" class="mx-2">Task Name: </label>
@@ -37,11 +37,11 @@
                         <label for="task_date" class="mx-2">Task Date: </label>
                         <input type="date" id="task_date" name="task_date" value="{{ $task->date }}" class="w-full border-2 border-gray-500 rounded p-2 focus:border-transparent dark:bg-gray-700">
                     </div>
-                    <div class="flex justify-between items-center m-5 mt-10">
+                    <div class="flex justify-between items-center m-5 mt-10 rounded-full">
                         @if(Str::startsWith($task->image, ['http://', 'https://']))
-                            <img src="{{ $task->image }}" alt="{{ $task->name }}" class="w-40 rounded-full">
+                            <img src="{{ $task->image }}" alt="{{ $task->name }}">
                         @else
-                            <img src="{{ asset('storage/' . $task->image) }}" alt="{{ $task->name }}" class="w-40 rounded-full">
+                            <img src="{{ asset('storage/' . $task->image) }}" alt="{{ $task->name }}" class="w-2 h-2">
                         @endif
                         <label for="task_image" class="mx-2"></label>
                         <input type="file" id="task_image" name="task_image" class="w-full border-2 border-gray-500 rounded p-2 focus:border-transparent dark:bg-gray-700">

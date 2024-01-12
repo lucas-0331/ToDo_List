@@ -83,17 +83,17 @@
                             @endif
                         </td>
                         <td class="flex items-center px-6 py-10">
-                            <a href="{{ route('details', $task->id) }}" class="font-medium text-white-600 dark:text-white-500 hover:underline">
+                            <a href="{{ route('task.details', $task->id) }}" class="font-medium text-white-600 dark:text-white-500 hover:underline">
                                 <span class="material-symbols-outlined">
                                     visibility
                                 </span>
                             </a>
-                            <a href="{{ route('edit', $task->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline ms-3">
+                            <a href="{{ route('task.edit', $task->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline ms-3">
                                 <span class="material-symbols-outlined">
                                     edit_square
                                 </span>
                             </a>
-                            <a href="#" onclick="confirm_delete('{{ route('delete_task', $task->id) }}', '{{ $task->name }}')" class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">
+                            <a href="#" onclick="confirm_delete('{{ route('task.destroy', $task->id) }}', '{{ $task->name }}')" class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">
                                 <span class="material-symbols-outlined">
                                     delete
                                 </span>

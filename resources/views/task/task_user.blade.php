@@ -50,7 +50,7 @@
                             <img src="{{ $task->image }}" alt="" class="w-20">
                         </td>
                         <td class="flex items-center px-6 py-10">
-                            <a href="{{ route('details', $task->id) }}" class="font-medium text-white-600 dark:text-white-500 hover:underline">
+                            <a href="{{ route('task.details', $task->id) }}" class="font-medium text-white-600 dark:text-white-500 hover:underline">
                                 <span class="material-symbols-outlined">
                                     visibility
                                 </span>
