@@ -27,3 +27,5 @@ Route::prefix('/task')->controller(TaskController::class)->name('task.')->group(
     Route::get('/{task}/destroy', 'destroy')->name('destroy');
     Route::post('/{task}/status', 'status')->name('status');
 });
+
+Route::inertia('/hello_word', 'Hello');
