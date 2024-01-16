@@ -6,6 +6,7 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
@@ -123,9 +124,12 @@ class TaskController extends Controller
         $task->update([
             'status' => $status,
         ]);
-        dd($task);
 
-//        return redirect()->route('task.index');
         return response()->json(['success' => true]);
+    }
+
+    public function hello()
+    {
+        return Inertia::render('Task/Hello');
     }
 }
