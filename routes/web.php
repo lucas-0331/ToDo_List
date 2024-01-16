@@ -28,5 +28,5 @@ Route::prefix('/task')->controller(TaskController::class)->name('task.')->group(
     Route::post('/{task}/status', 'status')->name('status');
 });
 
-Route::get('/hello_word', [TaskController::class, 'hello'])
+Route::get('/hello', [TaskController::class, 'hello'])
     ->name('hello');
