@@ -30,3 +30,7 @@ Route::prefix('/task')->controller(TaskController::class)->name('task.')->group(
 
 Route::get('/hello', [TaskController::class, 'hello'])
     ->name('hello');
+Route::get('/', [TaskController::class, 'index'])
+    ->name('task');
+Route::get('/learn', [TaskController::class, 'learn'])
+    ->name('learn');
