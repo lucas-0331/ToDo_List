@@ -6,17 +6,18 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $tasks = Task::query()->orderBy('date', 'asc')->paginate(10);
-        return view('task.home', compact('tasks'));
-    }
+//    public function index()
+//    {
+//        $tasks = Task::query()->orderBy('date', 'asc')->paginate(10);
+//        return view('task.home', compact('tasks'));
+//    }
 
     /**
      * Show the form for creating a new resource.
@@ -115,7 +116,7 @@ class TaskController extends Controller
     }
 
     /**
-     * .
+     * Change resource status.
      */
     public function status(Task $task)
     {
@@ -123,9 +124,39 @@ class TaskController extends Controller
         $task->update([
             'status' => $status,
         ]);
-        dd($task);
 
-//        return redirect()->route('task.index');
         return response()->json(['success' => true]);
+    }
+
+    public function hello()
+    {
+        return Inertia::render('Task/Hello');
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $tasks = Task::all();
+        return Inertia::render('Task/Task', [
+            'tasks' => $tasks
+        ]);
+    }
+
+    /**
+     * Learn vue and pratice.
+     */
+    public function learn()
+    {
+        return Inertia::render('Task/Learn');
+    }
+
+    /**
+     * Challange VueSchool
+     */
+    public function price()
+    {
+        return Inertia::render('Task/Price');
     }
 }

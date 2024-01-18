@@ -27,3 +27,12 @@ Route::prefix('/task')->controller(TaskController::class)->name('task.')->group(
     Route::get('/{task}/destroy', 'destroy')->name('destroy');
     Route::post('/{task}/status', 'status')->name('status');
 });
+
+Route::get('/hello', [TaskController::class, 'hello'])
+    ->name('hello');
+Route::get('/', [TaskController::class, 'index'])
+    ->name('task');
+Route::get('/learn', [TaskController::class, 'learn'])
+    ->name('learn');
+Route::get('/price', [TaskController::class, 'price'])
+    ->name('price');
