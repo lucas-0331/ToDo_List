@@ -151,4 +151,12 @@ class TaskController extends Controller
     {
         return Inertia::render('Task/Learn');
     }
+
+    /**
+     * Challange VueSchool
+     */
+    public function price()
+    {
+        return Inertia::render('Task/Price');
+    }
 }
