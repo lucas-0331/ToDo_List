@@ -34,3 +34,5 @@ Route::get('/', [TaskController::class, 'index'])
     ->name('task');
 Route::get('/learn', [TaskController::class, 'learn'])
     ->name('learn');
+Route::get('/price', [TaskController::class, 'price'])
+    ->name('price');
