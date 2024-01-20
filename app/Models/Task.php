@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Task extends Model
 {
@@ -20,6 +21,21 @@ class Task extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getStatusAttribute($value)
+    {
+        return (bool) $value;
+    }
+
+    public function getDateAttribute()
+    {
+        return date('d/m/Y');
+    }
+
+    public function getDescriptionAttribute($value)
+    {
+        return  Str::limit($value, 80);
     }
 }
