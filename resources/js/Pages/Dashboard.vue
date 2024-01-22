@@ -40,7 +40,7 @@ const layoutGrid = [
         <template #header>
             <div class="flex justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Task</h2>
-                <Link :href="route('task.create')" class="btn btn-primary">New Task</Link>
+                <Link :href="route('task.create')" class="bg-blue-500 text-white font-bold h-10 w-28 flex items-center justify-center rounded dark:hover:bg-blue-600">New Task</Link>
             </div>
         </template>
 
@@ -69,7 +69,7 @@ const layoutGrid = [
                             </p>
                             <input type="checkbox"
                                    v-model="task.status"
-                                   class="justify-self-center size-8 rounded-full de"
+                                   class="justify-self-center size-8 rounded-full cursor-pointer"
                             >
                             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
                                 <form action=""
