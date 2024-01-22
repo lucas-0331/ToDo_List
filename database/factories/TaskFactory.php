@@ -20,13 +20,16 @@ class TaskFactory extends Factory
     {
         $start_date = Carbon::now();
         $end_date = $start_date->copy()->addDays(60);
+
+        $user_ids = User::pluck('id')->toArray();
+        $user_id = $this->faker->randomElement($user_ids);
         return [
             'name' => fake()->word(),
             'description' => fake()->text(),
             'status' => fake()->boolean(),
             'image' => fake()->imageUrl(350, 350),
             'date' => fake()->dateTimeBetween($start_date, $end_date),
-//            'id_user' => User::pluck('id')->random(),
+            'user_id' =>$user_id,
         ];
     }
 }
