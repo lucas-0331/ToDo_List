@@ -21,7 +21,7 @@ class Task extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function getStatusAttribute($value)
@@ -29,13 +29,18 @@ class Task extends Model
         return (bool) $value;
     }
 
-    public function getDateAttribute()
-    {
-        return date('d/m/Y');
-    }
+//    public function getDateAttribute()
+//    {
+//        return date('d/m/Y');
+//    }
 
     public function getDescriptionAttribute($value)
     {
         return  Str::limit($value, 80);
+    }
+
+    public function getImageAttribute($value)
+    {
+        return $value ?? asset('storage/img/no_image.jpg');
     }
 }
