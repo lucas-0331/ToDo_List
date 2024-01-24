@@ -34,7 +34,7 @@ use Inertia\Inertia;
 //Route::get('/hello', [TaskController::class, 'hello'])
 //    ->name('hello');
 Route::get('/', [TaskController::class, 'index'])
-    ->name('task');
+    ->name('index');
 //Route::get('/learn', [TaskController::class, 'learn'])
 //    ->name('learn');
 //Route::get('/price', [TaskController::class, 'price'])
@@ -47,6 +47,9 @@ Route::get('/dashboard', [TaskController::class, 'dashboard'])
 Route::middleware('auth')->name('task.')->group(function () {
     Route::get('/create', [TaskController::class, 'create'])->name('create');
     Route::post('/store', [TaskController::class, 'store'])->name('store');
+    Route::get('/show/{task}', [TaskController::class, 'show'])->name('show');
+    Route::get('/edit/{task}', [TaskController::class, 'edit'])->name('edit');
+    Route::patch('/update/{task}', [TaskController::class, 'update'])->name('update');
     Route::delete('/destroy/{task}', [TaskController::class, 'destroy'])->name('destroy');
 });
 

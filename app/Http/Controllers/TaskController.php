@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use PhpParser\Node\Stmt\Return_;
 
 class TaskController extends Controller
 {
@@ -98,7 +99,20 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        return view('task.edit', compact('task'));
+        return Inertia::render('Task/Edit', [
+            'task' => $task,
+        ]);
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $task->update([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'date' => $request->input('date'),
+            'image' => $request->input('image'),
+        ]);
+        return Redirect::route('dashboard');
     }
 
     /**
@@ -176,7 +190,7 @@ class TaskController extends Controller
     public function dashboard()
     {
         return Inertia::render('Dashboard', [
-            'tasks' => auth()->user()->tasks
+            'tasks' => auth()->user()->tasks,
         ]);
     }
 

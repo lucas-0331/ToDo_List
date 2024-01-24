@@ -29,10 +29,10 @@ class Task extends Model
         return (bool) $value;
     }
 
-//    public function getDateAttribute()
-//    {
-//        return date('d/m/Y');
-//    }
+    public function getDateAttribute()
+    {
+        return date('d/m/Y');
+    }
 
     public function getDescriptionAttribute($value)
     {
@@ -41,6 +41,6 @@ class Task extends Model
 
     public function getImageAttribute($value)
     {
-        return $value ?? asset('storage/img/no_image.jpg');
+        return $value ?? asset('storage/img/no_image.png');
     }
 }

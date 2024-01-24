@@ -1,19 +1,7 @@
 <script setup>
     import { Head } from '@inertiajs/inertia-vue3';
-    import UpdateProfileInformationForm from "@/Pages/Profile/Partials/UpdateProfileInformationForm.vue";
-    import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
-    import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
     import CreateNewTaskForm from "@/Pages/Task/Partials/CreateNewTaskForm.vue";
-
-    defineProps({
-        mustVerifyEmail: {
-            type: Boolean,
-        },
-        status: {
-            type: String,
-        },
-    });
 </script>
 
 <template>
@@ -28,8 +16,6 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <CreateNewTaskForm
-                        :must-verify-email="mustVerifyEmail"
-                        :status="status"
                         class="max-w-xl"
                     />
                 </div>
