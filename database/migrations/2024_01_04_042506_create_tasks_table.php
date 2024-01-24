@@ -18,8 +18,7 @@ return new class extends Migration
             $table->boolean('status')->default(false);
             $table->string('image')->nullable();
             $table->date('date');
-//            $table->unsignedBigInteger('id_user');
-//            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

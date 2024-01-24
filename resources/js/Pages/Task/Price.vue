@@ -47,22 +47,22 @@ const plans = ref([
             {id: 4, label: 'Team data excluded from training by default'},
         ],
         footer: '* Price billed annually minimum 2 users',
-        colorButton: 'btn-primary bg-green-800 hover:bg-green-900',
+        colorButton: 'btn-primary bg-green-700 hover:bg-green-800',
     },
 ]);
 </script>
 
 <template>
     <Head :title="title"></Head>
-    <div class="plans-container flex justify-center items-center p-2 min-h-screen bg-white dark:bg-gray-400">
-        <div class="plans-layout dark:text-white p-2 grid grid-rows-[80px_minmax(400px,_1fr)_80px] w-full max-w-[900px] min-h-[400px] shrink-0">
-            <div class="plan-header flex items-center pl-5 dark:text-white bord bg-gray-700 font-medium text-xl rounded-t-md">
+    <div class="plans-container flex justify-center items-center p-2 min-h-screen bg-white">
+        <div class="plans-layout p-2 grid grid-rows-[80px_minmax(400px,_1fr)_80px] w-full max-w-[900px] min-h-[400px] shrink-0">
+            <div class="plan-header flex items-center pl-5 bord bg-gray-700 font-medium text-xl rounded-t-md">
                 <h1>{{ theHeader }}</h1>
             </div>
             <div class="plans-content grid grid-cols-1 md:grid-cols-3">
                 <div v-for="plan in plans"
                      :key="plan.id"
-                     class="border-gray-500 border-b-[1px] border-t-[1px] p-5 dark:bg-gray-900 md:border-[1px]"
+                     class="border-gray-500 border-b-[1px] border-t-[1px] p-5 md:border-[1px]"
                 >
                     <h3 class="font-medium text-xl">
                         {{ plan.type }}
@@ -99,7 +99,7 @@ const plans = ref([
                     </span>
                 </div>
             </div>
-            <div class="price-footer flex items-center justify-center dark:text-white bg-gray-700 font-normal rounded-b-md">
+            <div class="price-footer flex items-center justify-center bg-gray-700 font-normal rounded-b-md">
                 {{ theFooter }}
             </div>
         </div>

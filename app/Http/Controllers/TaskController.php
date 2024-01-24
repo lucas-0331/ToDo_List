@@ -2,57 +2,86 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskCreateRequest;
 use App\Models\Task;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use PhpParser\Node\Stmt\Return_;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-//    public function index()
-//    {
+    public function index()
+    {
 //        $tasks = Task::query()->orderBy('date', 'asc')->paginate(10);
 //        return view('task.home', compact('tasks'));
-//    }
+        return Inertia::render('Welcome');
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
-        return view('task.create_task');
+        return Inertia::render('Task/Create', [
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'status' => session('status'),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+//    public function store(Request $request)
+//    {
+//        $request->validate([
+//            'task_name' => 'required',
+//            'task_description' => 'required',
+//            'task_date' => 'required',
+//            'task_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//        ]);
+//
+//        $task = new Task();
+//        $task->name = $request->input('task_name');
+//        $task->description = $request->input('task_description');
+//        $task->date = $request->input('task_date');
+//        $task->status = false;
+//
+//        if ($request->hasFile('task_image')) {
+//            $image = $request->file('task_image');
+//            $path_image = $image->store('img', 'public');
+//            $task->image = $path_image;
+//        }
+//        $task->save();
+//
+//        return redirect()->route('task.index')->with('success', 'Your new task has been added successfully');
+//    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(TaskCreateRequest $request): RedirectResponse
     {
-        $request->validate([
-            'task_name' => 'required',
-            'task_description' => 'required',
-            'task_date' => 'required',
-            'task_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
+        $data = $request->validated();
+//        $data['user_id'] = auth()->id();
+//        dd($data);
+//        $task = Task::create($data);
         $task = new Task();
-        $task->name = $request->input('task_name');
-        $task->description = $request->input('task_description');
-        $task->date = $request->input('task_date');
+        $task->name = $data['name'];
+        $task->description = $data['description'];
         $task->status = false;
-
-        if ($request->hasFile('task_image')) {
-            $image = $request->file('task_image');
-            $path_image = $image->store('img', 'public');
-            $task->image = $path_image;
-        }
+        $task->date = $data['date'];
+        $task->user_id = auth()->id();
         $task->save();
-
-        return redirect()->route('task.index')->with('success', 'Your new task has been added successfully');
+//        dd($task);
+        return Redirect::route('dashboard');
     }
 
     /**
@@ -70,50 +99,72 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        return view('task.edit', compact('task'));
+        return Inertia::render('Task/Edit', [
+            'task' => $task,
+        ]);
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $task->update([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'date' => $request->input('date'),
+            'image' => $request->input('image'),
+        ]);
+        return Redirect::route('dashboard');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
-    {
-        $request->validate([
-            'task_name' => 'required',
-            'task_description' => 'required',
-            'task_date' => 'required|date',
-            'task_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        $path_image = null;
-
-        if ($request->hasFile('task_image')) {
-            if ($task->image) {
-                Storage::delete($task->image);
-            }
-            $image = $request->file('task_image');
-            $path_image = $image->store('img', 'public');
-        } else {
-            $path_image = $task->image;
-        }
-
-        $task->update([
-            'name' => $request->input('task_name'),
-            'description' => $request->input('task_description'),
-            'date' => $request->input('task_date'),
-            'image' => $path_image,
-        ]);
-        return redirect()->route('task.edit', ['task' => $task->id])->with('success', 'Edited with success!');
-    }
+//    public function update(Request $request, Task $task)
+//    {
+//        $request->validate([
+//            'task_name' => 'required',
+//            'task_description' => 'required',
+//            'task_date' => 'required|date',
+//            'task_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//        ]);
+//
+//        $path_image = null;
+//
+//        if ($request->hasFile('task_image')) {
+//            if ($task->image) {
+//                Storage::delete($task->image);
+//            }
+//            $image = $request->file('task_image');
+//            $path_image = $image->store('img', 'public');
+//        } else {
+//            $path_image = $task->image;
+//        }
+//
+//        $task->update([
+//            'name' => $request->input('task_name'),
+//            'description' => $request->input('task_description'),
+//            'date' => $request->input('task_date'),
+//            'image' => $path_image,
+//        ]);
+//        return redirect()->route('task.edit', ['task' => $task->id])->with('success', 'Edited with success!');
+//    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Task $task)
     {
+//        dd($task);
         $task->delete();
-        return redirect()->route('task.index')->with('success', 'Your task was successfully deleted');
+
+        return Redirect::route('dashboard');
+//        return response()->json(['success' => true]);
+
     }
+//    public function destroy(Task $task)
+//    {
+//        $task->delete();
+//        return redirect()->route('task.index')->with('success', 'Your task was successfully deleted');
+//    }
 
     /**
      * Change resource status.
@@ -136,11 +187,10 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function dashboard()
     {
-        $tasks = Task::all();
-        return Inertia::render('Task/Task', [
-            'tasks' => $tasks
+        return Inertia::render('Dashboard', [
+            'tasks' => auth()->user()->tasks,
         ]);
     }
 
