@@ -1,5 +1,8 @@
 <script setup>
 import { router } from "@inertiajs/vue3";
+import Modal from "@/Components/Modal.vue";
+import { ref } from "vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 defineProps({
     tasks: {
@@ -7,6 +10,7 @@ defineProps({
         required: true,
     },
 });
+const modal = ref(false);
 const layoutGrid = [
     'grid-cols-[100px_100px_100px_100px_100px]',
     'md:grid-cols-[100px_100px_180px_1fr_100px_100px]',
@@ -35,6 +39,13 @@ const showTask = (idTask) => {
     if(idTask) {
         router.get(route('task.show', idTask));
     }
+}
+function onShowModal() {
+    modal.value = !modal.value;
+}
+function onYesClick(idTask) {
+    deleteTask(idTask);
+    onShowModal();
 }
 </script>
 
@@ -86,7 +97,7 @@ const showTask = (idTask) => {
                         <path d="M16 5l3 3" />
                     </svg>
                 </button>
-                <button @click="deleteTask(task.id)">
+                <button @click.prevent="onShowModal">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#D32500" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <path d="M4 7l16 0" />
@@ -96,6 +107,29 @@ const showTask = (idTask) => {
                         <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                     </svg>
                 </button>
+
+                <Modal :show="modal">
+                    <div class="text-center pt-2 font-bold">
+                        <p>
+                            Do you really want to delete this task?
+                        </p>
+                    </div>
+                    <div class="flex justify-between p-3">
+                        <PrimaryButton
+                            class="bg-green-600"
+                            @click.prevent="onYesClick(task.id)"
+                        >
+                            Yes
+                        </PrimaryButton>
+
+                        <PrimaryButton
+                            class="bg-red-700"
+                            @click.prevent="onShowModal"
+                        >
+                            Cancel
+                        </PrimaryButton>
+                    </div>
+                </Modal>
 
             </div>
         </div>

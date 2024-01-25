@@ -3,9 +3,8 @@ import { Head, Link } from "@inertiajs/vue3";
 import { ref } from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
-const props = defineProps(['task', 'status']);
+const props = defineProps(['task']);
 const task = ref(props.task);
-
 </script>
 
 <template>
@@ -20,11 +19,30 @@ const task = ref(props.task);
         </template>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <h2>{{ task.name }}</h2>
-                    <p>{{ task.description }}</p>
-                    <p>{{ task.date }}</p>
-                    <p>{{ task.status }}</p>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-3">
+                    <h2 class="font-bold text-center text-2xl">
+                        {{ task.name }}
+                    </h2>
+                    <p class="px-2 my-2">
+                        <span class="font-bold">
+                            Description:
+                        </span>
+                        {{ task.description }}
+                    </p>
+                    <div class="flex justify-between px-2">
+                        <p>
+                            <span class="font-bold">
+                                Date:
+                            </span>
+                            {{ task.date }}
+                        </p>
+                        <div>
+                            <span class="font-bold">
+                                Task Status:
+                            </span>
+                            <input type="checkbox" :checked="task.status" disabled />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

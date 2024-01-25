@@ -6,6 +6,7 @@ import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import moment from "moment";
+import Modal from "@/Components/Modal.vue";
 
 const props = defineProps({
     tasks: {
@@ -24,6 +25,14 @@ const form = useForm({
 });
 function onSubmit(idTask) {
     form.patch(route('task.update', idTask));
+}
+const modal = ref(false);
+function onShowModal() {
+    modal.value = !modal.value;
+}
+function onYesClick(idTask) {
+    onSubmit(idTask);
+    onShowModal();
 }
 </script>
 
@@ -54,10 +63,11 @@ function onSubmit(idTask) {
             <div>
                 <InputLabel for="description" value="Description" />
 
-                <TextInput
+                <textarea
                     id="description"
-                    type="text"
-                    class="mt-1 block w-full"
+                    rows="8"
+                    cols="50"
+                    class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                     v-model="form.description"
                     required
                 />
@@ -97,7 +107,30 @@ function onSubmit(idTask) {
                 <InputError class="mt-2" :message="form.errors.image" />
             </div>
 
-            <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+            <PrimaryButton @click.prevent="onShowModal">Save</PrimaryButton>
+
+            <Modal :show="modal">
+                <div class="text-center pt-2 font-bold">
+                    <p>
+                        Do you really want to change the current task information?
+                    </p>
+                </div>
+                <div class="flex justify-between p-3">
+                    <PrimaryButton
+                        class="bg-green-600"
+                        @click.prevent="onYesClick(task.id)"
+                    >
+                        Yes
+                    </PrimaryButton>
+
+                    <PrimaryButton
+                        class="bg-red-700"
+                        @click.prevent="onShowModal"
+                    >
+                        Cancel
+                    </PrimaryButton>
+                </div>
+            </Modal>
 
         </form>
     </section>

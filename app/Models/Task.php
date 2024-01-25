@@ -36,7 +36,8 @@ class Task extends Model
 
     public function getDescriptionAttribute($value)
     {
-        return  Str::limit($value, 80);
+        /*return Str::limit($value, 80);*/
+        return $value;
     }
 
     public function getImageAttribute($value)
