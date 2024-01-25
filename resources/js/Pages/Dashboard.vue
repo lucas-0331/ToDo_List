@@ -3,10 +3,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import TasksList from "@/Pages/Task/Components/TasksList.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const props = defineProps(['tasks']);
 const tasks = ref(props.tasks);
-// const status = ref('');
+const modal = ref(false);
+function onShowModal() {
+    modal.value = !modal.value;
+}
 </script>
 
 <template>
@@ -16,9 +20,31 @@ const tasks = ref(props.tasks);
         <template #header>
             <div class="flex justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Task</h2>
-                <Link :href="route('task.create')" class="bg-blue-500 text-white font-bold h-10 w-28 flex items-center justify-center rounded dark:hover:bg-blue-600">New Task</Link>
+                <div class="flex gap-3">
+                    <PrimaryButton @click.prevent="onShowModal"
+                          class="bg-blue-500 text-white font-bold h-10 w-28 flex items-center justify-center rounded dark:hover:bg-gray-700"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-type-csv" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+                            <path d="M7 16.5a1.5 1.5 0 0 0 -3 0v3a1.5 1.5 0 0 0 3 0" />
+                            <path d="M10 20.25c0 .414 .336 .75 .75 .75h1.25a1 1 0 0 0 1 -1v-1a1 1 0 0 0 -1 -1h-1a1 1 0 0 1 -1 -1v-1a1 1 0 0 1 1 -1h1.25a.75 .75 0 0 1 .75 .75" />
+                            <path d="M16 15l2 6l2 -6" />
+                        </svg>
+                    </PrimaryButton>
+                    <Link :href="route('task.create')"
+                          class="bg-blue-500 text-white font-bold h-10 w-28 flex items-center justify-center rounded dark:hover:bg-blue-600"
+                    >
+                        New Task
+                    </Link>
+                </div>
             </div>
         </template>
+
+        <Modal :show="modal">
+
+        </Modal>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
