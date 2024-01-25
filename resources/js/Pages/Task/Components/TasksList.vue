@@ -1,5 +1,5 @@
 <script setup>
-import {router} from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 
 defineProps({
     tasks: {
@@ -46,7 +46,7 @@ const showTask = (idTask) => {
     </div>
 
     <div v-else class="p-6 text-gray-900">
-        <div v-for="(task, index) in tasks"
+        <div v-for="(task) in tasks"
              :key="task.id"
              class="grid shrink-0 my-2 px-2 items-center justify-center border-b-2 first:border-t-2"
              :class="layoutGrid"

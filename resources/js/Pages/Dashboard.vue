@@ -1,15 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, Link, router, useForm} from '@inertiajs/vue3';
-import {computed, ref} from 'vue';
+import { Head, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import TasksList from "@/Pages/Task/Components/TasksList.vue";
 
 const props = defineProps(['tasks']);
 const tasks = ref(props.tasks);
 // const status = ref('');
-function onStatus(idTask) {
-    router.patch(route('task.status', idTask));
-}
 </script>
 
 <template>

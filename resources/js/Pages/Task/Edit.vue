@@ -2,7 +2,7 @@
 import { Head } from '@inertiajs/inertia-vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import UpdateTaskForm from "@/Pages/Task/Partials/UpdateTaskForm.vue";
-import {ref} from "vue";
+import { ref } from "vue";
 
 const props = defineProps(['task']);
 const task = ref(props.task);

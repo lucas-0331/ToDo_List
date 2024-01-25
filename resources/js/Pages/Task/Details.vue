@@ -1,6 +1,6 @@
 <script setup>
-import {ref} from "vue";
-import {Head, Link} from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
+import { ref } from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 const props = defineProps(['task', 'status']);
