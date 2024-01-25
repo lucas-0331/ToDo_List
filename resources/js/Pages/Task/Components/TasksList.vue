@@ -14,6 +14,11 @@ const layoutGrid = [
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
 ];
+const newStatus = (idTask, currentStatus) => {
+    if(idTask) {
+        router.patch(route('task.status', idTask), {status: currentStatus});
+    }
+}
 const deleteTask = (idTask) => {
     if(idTask) {
         router.delete(route('task.destroy', idTask), {
@@ -59,10 +64,13 @@ const showTask = (idTask) => {
                 {{ task.description }}
             </p>
             <input type="checkbox"
+                   :checked="task.status"
                    v-model="task.status"
                    class="justify-self-center size-8 rounded-full cursor-pointer"
+                   @click="newStatus(task.id, task.status)"
             >
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
+
                 <button @click="showTask(task.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6E6E6E" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -88,6 +96,7 @@ const showTask = (idTask) => {
                         <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                     </svg>
                 </button>
+
             </div>
         </div>
     </div>
