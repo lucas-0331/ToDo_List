@@ -26,8 +26,8 @@ class TaskCreateRequest extends FormRequest
             'description' => ['required', 'string'],
             'date' => ['required'],
             'status' => ['boolean'],
-//            'image' => ['string'],
-//            'user_id' => ['exists:users,id'],
+            'image' => ['string'],
+            'user_id' => ['exists:users,id'],
         ];
     }
 }

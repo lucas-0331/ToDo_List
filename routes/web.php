@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TemporaryTaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 
@@ -31,6 +32,11 @@ Route::middleware('auth')->name('task.')->group(function () {
     Route::patch('task/{task}/update', [TaskController::class, 'update'])->name('update');
     Route::delete('task/{task}/destroy', [TaskController::class, 'destroy'])->name('destroy');
     Route::patch('task/{task}/status', [TaskController::class, 'status'])->name('status');
+});
+
+Route::middleware('auth')->name('temporary.')->group(function () {
+    Route::get('temporary/task/show', [TemporaryTaskController::class, 'show'])->name('show');
+    Route::post('temporary/task/import', [TemporaryTaskController::class, 'store'])->name('store');
 });
 
 Route::middleware('auth')->group(function () {

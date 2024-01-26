@@ -4,12 +4,14 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import TasksList from "@/Pages/Task/Components/TasksList.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import InputCSV from "@/Pages/Task/InputCSV.vue";
+import Modal from "@/Components/Modal.vue";
 
 const props = defineProps(['tasks']);
 const tasks = ref(props.tasks);
 const modal = ref(false);
 function onShowModal() {
-    modal.value = !modal.value;
+    return modal.value = !modal.value;
 }
 </script>
 
@@ -43,7 +45,14 @@ function onShowModal() {
         </template>
 
         <Modal :show="modal">
+            <div class="p-3">
+                <InputCSV>
 
+                </InputCSV>
+                <PrimaryButton @click="onShowModal" class="bg-red-700 hover:bg-red-600 w-full">
+                    Close
+                </PrimaryButton>
+            </div>
         </Modal>
 
         <div class="py-12">

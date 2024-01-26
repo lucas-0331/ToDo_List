@@ -19,7 +19,6 @@
                         class="max-w-xl"
                     />
                 </div>
-
             </div>
         </div>
     </AuthenticatedLayout>
