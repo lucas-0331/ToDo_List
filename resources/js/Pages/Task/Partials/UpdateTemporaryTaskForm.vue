@@ -24,7 +24,7 @@ const form = useForm({
     image: task.value.image,
 });
 function onSubmit(idTask) {
-    form.patch(route('task.update', idTask));
+    form.patch(route('temporary.update', idTask));
 }
 const modal = ref(false);
 function onShowModal() {
@@ -38,7 +38,7 @@ function onYesClick(idTask) {
 
 <template>
     <section>
-        <h2 class="text-lg font-medium text-gray-900">Task Information</h2>
+        <h2 class="text-lg font-medium text-gray-900">CSV Task Information</h2>
 
         <p class="mt-1 text-sm text-gray-600">
             Edit your task.

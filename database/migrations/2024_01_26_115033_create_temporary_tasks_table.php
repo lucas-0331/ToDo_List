@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->boolean('status');
             $table->foreignId('user_id')->constrained();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

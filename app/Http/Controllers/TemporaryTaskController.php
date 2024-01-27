@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\TemporaryTask;
 use Illuminate\Http\Request;
+use App\Http\Requests\TemporaryTaskRequest;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use App\Models\Task;
+
 
 class TemporaryTaskController extends Controller
 {
@@ -92,7 +95,9 @@ class TemporaryTaskController extends Controller
      */
     public function edit(TemporaryTask $temporaryTask)
     {
-        //
+        return Inertia::render('Task/EditTemporary', [
+            'task' => $temporaryTask,
+        ]);
     }
 
     /**
@@ -100,7 +105,13 @@ class TemporaryTaskController extends Controller
      */
     public function update(Request $request, TemporaryTask $temporaryTask)
     {
-        //
+        $temporaryTask->update([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'date' => $request->input('date'),
+            'image' => $request->input('image'),
+        ]);
+        return Redirect::route('temporary.show');
     }
 
     /**

@@ -2,14 +2,14 @@
 import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Modal from "@/Components/Modal.vue";
+import {router, useForm} from "@inertiajs/vue3";
 
-defineProps({
-    temporary_tasks: {
-        type: Array,
-        required: true,
-    },
-});
+const { temporary_tasks } = defineProps(['temporary_tasks']);
+
+const tasks = ref({});
 const modal = ref(false);
+const update = ref(false);
+
 const layoutGrid = [
     'grid-cols-[140px_180px_100px_100px]',
     'md:grid-cols-[140px_240px_1fr_100px_100px]',
@@ -17,8 +17,17 @@ const layoutGrid = [
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
 ];
+
 function onShowModal() {
     modal.value = true;
+}
+const editTemporaryTask = (idTemporaryTask) => {
+    if(idTemporaryTask) {
+        router.get(route('temporary.edit', idTemporaryTask));
+    }
+}
+function deleteTemporaryTask(idTemporaryTask) {
+    router.delete(route('temporary.destroy', idTemporaryTask));
 }
 </script>
 
@@ -55,7 +64,7 @@ function onShowModal() {
 
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
 
-                <button @click="editTask(task.id)">
+                <button @click="editTemporaryTask(task.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0093FF" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
@@ -83,7 +92,7 @@ function onShowModal() {
                     <div class="flex justify-between p-3">
                         <PrimaryButton
                             class="bg-green-600"
-                            @click.prevent="onYesClick(task.id)"
+                            @click.prevent="deleteTemporaryTask(task.id)"
                         >
                             Yes
                         </PrimaryButton>
