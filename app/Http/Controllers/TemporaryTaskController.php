@@ -30,9 +30,10 @@ class TemporaryTaskController extends Controller
      */
     public function show(TemporaryTask $temporaryTask)
     {
-        $task = TemporaryTask::all();
-        dd($task);
-        return response()->json($task);
+//        return Inertia::render('Task/InputCSV', [
+        return Inertia::render('Task/TemporaryTask', [
+            'temporary_tasks' => $temporaryTask->get(),
+        ]);
     }
 
     /**
@@ -84,9 +85,6 @@ class TemporaryTaskController extends Controller
                 }
             }
         }
-
-
-        return Redirect::route('temporary.show');
     }
 
     /**

@@ -1,44 +1,39 @@
 <script setup>
 import { ref, watchEffect } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
+import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import Modal from "@/Components/Modal.vue";
-import ShowTemporaryTask from "@/Pages/Task/Partials/ShowTemporaryTask.vue";
+import ShowTemporaryTask from "@/Pages/Task/Components/TemporaryTaskList.vue";
 
+const { temporary_tasks } = defineProps(['temporary_tasks']);
 const form = useForm({
     file: null,
 });
 const importSuccess = ref(false);
-const showTemporaryTask = ref(false);
-const temporaryTask = ref([]);
-
-const fetchTemporaryTasks = async () => {
-    try {
-        const response = await router.get(route('temporary.show'));
-        temporaryTask.value = response.data;
-        console.log(temporaryTask);
-        showTemporaryTask.value = true;
-    } catch (error) {
-        console.error('Erro ao buscar os dados do servidor', error);
-    }
+const fetchTemporaryTasks = () => {
+    router.get(route('temporary.show'));
 }
 const handleSubmit = () => {
      form.post(route('temporary.store'));
 }
-watchEffect(() => {
-    if (form.progress && form.progress.percentage === 100) {
-        importSuccess.value = true;
-        setTimeout(() => {
-            importSuccess.value = false;
-        }, 3000);
-        fetchTemporaryTasks();
-    }
+watchEffect(async () => {
+    const fetchData = async () => {
+        if (form.progress && form.progress.percentage === 100) {
+            importSuccess.value = true;
+            setTimeout(() => {
+                importSuccess.value = false;
+            }, 3000);
+            await fetchTemporaryTasks();
+        }
+    };
+    await fetchData();
 });
+
 </script>
 
 <template>
-    <div class="my-2" v-show="!showTemporaryTask">
+    <div class="my-2">
         <form @submit.prevent="handleSubmit"
               name="csv_file"
               enctype="multipart/form-data"
@@ -73,14 +68,11 @@ watchEffect(() => {
                 </svg>
             </PrimaryButton>
         </form>
-        <Modal :show="importSuccess" :max-width="'sm'" title="Import Successful">
+        <Modal :show="importSuccess" :max-width="'sm'">
             <div class="m-2 h-24 flex flex-col justify-center items-center">
                 <input type="checkbox" class="rounded-full h-20 w-20" :checked="true" disabled>
                 <p class="font-bold ">Successful</p>
             </div>
         </Modal>
-        <ShowTemporaryTask v-show="showTemporaryTask">
-            <h1>{{temporaryTask}}</h1>
-        </ShowTemporaryTask>
     </div>
 </template>

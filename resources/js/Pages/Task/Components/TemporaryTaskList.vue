@@ -1,68 +1,40 @@
 <script setup>
-import { router } from "@inertiajs/vue3";
-import Modal from "@/Components/Modal.vue";
 import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Modal from "@/Components/Modal.vue";
 
 defineProps({
-    tasks: {
+    temporary_tasks: {
         type: Array,
         required: true,
     },
 });
 const modal = ref(false);
 const layoutGrid = [
-    'grid-cols-[100px_100px_100px_100px_100px]',
-    'md:grid-cols-[100px_100px_180px_1fr_100px_100px]',
+    'grid-cols-[140px_180px_100px_100px]',
+    'md:grid-cols-[140px_240px_1fr_100px_100px]',
     'grid-rows-[85px]',
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
 ];
-const newStatus = (idTask, currentStatus) => {
-    if(idTask) {
-        router.patch(route('task.status', idTask), {status: currentStatus});
-    }
-}
-const deleteTask = (idTask) => {
-    if(idTask) {
-        router.delete(route('task.destroy', idTask), {
-            preserveState: false,
-        });
-    }
-}
-const editTask = (idTask) => {
-    if(idTask) {
-        router.get(route('task.edit', idTask));
-    }
-}
-const showTask = (idTask) => {
-    if(idTask) {
-        router.get(route('task.show', idTask));
-    }
-}
 function onShowModal() {
-    modal.value = !modal.value;
-}
-function onYesClick(idTask) {
-    deleteTask(idTask);
-    onShowModal();
+    modal.value = true;
 }
 </script>
 
 <template>
-    <div v-if="!tasks.length" class="p-6 text-gray-900">
+    <div v-if="!temporary_tasks.length" class="p-6 text-gray-900">
         <slot>
 
         </slot>
     </div>
 
     <div v-else class="p-6 text-gray-900">
-        <div v-for="task in tasks"
+        <div v-for="task in temporary_tasks"
              :key="task.id"
              class="grid shrink-0 my-2 px-2 items-center justify-center border-b-2 first:border-t-2"
              :class="layoutGrid"
         >
-            <img loading="lazy" :src="task.image" :alt="task.description" class="rounded-full size-16">
             <p class="font-bold"
                :class="task.date"
             >
@@ -80,15 +52,9 @@ function onYesClick(idTask) {
                    class="justify-self-center size-8 rounded-full cursor-pointer"
                    @click="newStatus(task.id, task.status)"
             >
+
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
 
-                <button @click="showTask(task.id)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6E6E6E" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                    </svg>
-                </button>
                 <button @click="editTask(task.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0093FF" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -134,5 +100,8 @@ function onYesClick(idTask) {
             </div>
         </div>
     </div>
-
 </template>
+
+<style scoped>
+
+</style>
