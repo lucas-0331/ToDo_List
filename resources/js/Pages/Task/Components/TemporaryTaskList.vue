@@ -11,8 +11,8 @@ const modal = ref(false);
 const update = ref(false);
 
 const layoutGrid = [
-    'grid-cols-[140px_180px_100px_100px]',
-    'md:grid-cols-[140px_240px_1fr_100px_100px]',
+    'grid-cols-[140px_180px_100px]',
+    'md:grid-cols-[140px_240px_1fr_100px]',
     'grid-rows-[85px]',
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
@@ -21,6 +21,7 @@ const layoutGrid = [
 function onShowModal() {
     modal.value = true;
 }
+console.log(temporary_tasks);
 const editTemporaryTask = (idTemporaryTask) => {
     if(idTemporaryTask) {
         router.get(route('temporary.edit', idTemporaryTask));
@@ -55,12 +56,12 @@ function deleteTemporaryTask(idTemporaryTask) {
             <p class="hidden md:block font-light text-sm">
                 {{ task.description }}
             </p>
-            <input type="checkbox"
-                   :checked="task.status"
-                   v-model="task.status"
-                   class="justify-self-center size-8 rounded-full cursor-pointer"
-                   @click="newStatus(task.id, task.status)"
-            >
+<!--            <input type="checkbox"-->
+<!--                   :checked="task.status"-->
+<!--                   v-model="task.status"-->
+<!--                   class="justify-self-center size-8 rounded-full cursor-pointer"-->
+<!--                   @click="newStatus(task.id, task.status)"-->
+<!--            >-->
 
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
 

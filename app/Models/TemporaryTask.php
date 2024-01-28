@@ -17,12 +17,13 @@ class TemporaryTask extends Model
         'date',
         'status',
         'image',
+        'user_id',
     ];
 
-    public function setDateAttribute($value)
-    {
-        $this->attributes['date'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
-    }
+//    public function setDateAttribute($value)
+//    {
+//        $this->attributes['date'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+//    }
 
     public function user()
     {
@@ -34,10 +35,6 @@ class TemporaryTask extends Model
         return $value ?? asset('storage/img/no_image.png');
     }
 
-    public function getImageAttribute($value)
-    {
-        return $value ?? asset('storage/img/no_image.png');
-    }
 
     public function getDateAttribute()
     {

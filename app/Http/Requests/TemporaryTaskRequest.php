@@ -26,7 +26,7 @@ class TemporaryTaskRequest extends FormRequest
             'description' => ['required', 'string'],
             'date' => ['required'],
             'status' => ['boolean'],
-            'image' => ['string'],
+            'image' => ['string', 'nullable'],
             'user_id' => ['exists:users,id'],
         ];
     }

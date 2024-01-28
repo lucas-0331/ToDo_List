@@ -16,6 +16,7 @@ class Task extends Model
         'date',
         'image',
         'status',
+        'user_id',
     ];
 
     public function user()
@@ -31,12 +32,6 @@ class Task extends Model
     public function getDateAttribute()
     {
         return date('d/m/Y');
-    }
-
-    public function getDescriptionAttribute($value)
-    {
-        /*return Str::limit($value, 80);*/
-        return $value;
     }
 
     public function getImageAttribute($value)

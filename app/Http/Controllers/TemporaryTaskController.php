@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TemporaryTaskRequest;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use App\Models\Task;
 
 
 class TemporaryTaskController extends Controller
@@ -33,7 +32,7 @@ class TemporaryTaskController extends Controller
      */
     public function show(TemporaryTask $temporaryTask)
     {
-//        return Inertia::render('Task/InputCSV', [
+//        dd($temporaryTask->get());
         return Inertia::render('Task/TemporaryTask', [
             'temporary_tasks' => $temporaryTask->get(),
         ]);
