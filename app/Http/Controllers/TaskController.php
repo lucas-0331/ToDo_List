@@ -66,13 +66,6 @@ class TaskController extends Controller
         $data['status'] = false;
         $data['user_id'] = auth()->id();
         Task::create($data);
-//        $task = new Task();
-//        $task->name = $data['name'];
-//        $task->description = $data['description'];
-//        $task->status = false;
-//        $task->date = $data['date'];
-//        $task->user_id = auth()->id();
-//        $task->save();
         return Redirect::route('dashboard');
     }
 

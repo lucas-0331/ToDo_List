@@ -20,10 +20,10 @@ class TemporaryTask extends Model
         'user_id',
     ];
 
-//    public function setDateAttribute($value)
-//    {
-//        $this->attributes['date'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
-//    }
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+    }
 
     public function user()
     {
@@ -35,9 +35,9 @@ class TemporaryTask extends Model
         return $value ?? asset('storage/img/no_image.png');
     }
 
-
-    public function getDateAttribute()
+    public function getDateAttribute($value)
     {
-        return date('d/m/Y');
+        $carbonDate = is_string($value) ? \Carbon\Carbon::parse($value) : $value;
+        return $carbonDate instanceof Carbon ? $carbonDate->format('d/m/Y') : $value;
     }
 }

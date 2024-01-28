@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,9 +30,10 @@ class Task extends Model
         return (bool) $value;
     }
 
-    public function getDateAttribute()
+    public function getDateAttribute($value)
     {
-        return date('d/m/Y');
+        $carbonDate = is_string($value) ? Carbon::parse($value) : $value;
+        return $carbonDate instanceof Carbon ? $carbonDate->format('d/m/Y') : $value;
     }
 
     public function getImageAttribute($value)
