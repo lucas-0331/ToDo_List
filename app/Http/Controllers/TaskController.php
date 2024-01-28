@@ -18,7 +18,10 @@ use PhpParser\Node\Stmt\Return_;
 class TaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a welcome page listing tasks or any other relevant information.
+     *
+     * @return \Inertia\Response
+     *
      */
     public function index()
     {
@@ -26,7 +29,10 @@ class TaskController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the user dashboard with a listing of tasks.
+     *
+     * @return \Inertia\Response
+     *
      */
     public function dashboard()
     {
@@ -36,33 +42,46 @@ class TaskController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new task.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Inertia\Response
+     *
      */
     public function create(Request $request)
     {
-        return Inertia::render('Task/Create', [
-            'status' => session('status'),
-        ]);
+        return Inertia::render('Task/Create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created task in storage.
+     *
+     * @param \App\Http\Requests\TaskCreateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     *
      */
     public function store(TaskCreateRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $task = new Task();
-        $task->name = $data['name'];
-        $task->description = $data['description'];
-        $task->status = false;
-        $task->date = $data['date'];
-        $task->user_id = auth()->id();
-        $task->save();
+        $data['status'] = false;
+        $data['user_id'] = auth()->id();
+        Task::create($data);
+//        $task = new Task();
+//        $task->name = $data['name'];
+//        $task->description = $data['description'];
+//        $task->status = false;
+//        $task->date = $data['date'];
+//        $task->user_id = auth()->id();
+//        $task->save();
         return Redirect::route('dashboard');
     }
 
     /**
-     * Display the specified resource.
+     * Display the details of the specified task.
+     *
+     * @param \App\Models\Task $task
+     * @return \Inertia\Response
+     *
      */
     public function show(Task $task)
     {
@@ -72,7 +91,11 @@ class TaskController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the details of the specified task.
+     *
+     * @param \App\Models\Task $task
+     * @return \Inertia\Response
+     *
      */
     public function edit(Task $task)
     {
@@ -82,7 +105,12 @@ class TaskController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the details of the specified task in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Task $task
+     * @return \Illuminate\Http\RedirectResponse
+     *
      */
     public function update(Request $request, Task $task)
     {
@@ -96,7 +124,11 @@ class TaskController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified task from storage.
+     *
+     * @param \App\Models\Task $task
+     * @return \Illuminate\Http\RedirectResponse
+     *
      */
     public function destroy(Task $task)
     {
@@ -105,7 +137,12 @@ class TaskController extends Controller
     }
 
     /**
-     * Change resource task status.
+     * Change the status of the specified task.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Task $task
+     * @return \Illuminate\Http\RedirectResponse
+     *
      */
     public function status(Request $request, Task $task)
     {
