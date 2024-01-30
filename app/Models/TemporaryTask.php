@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TemporaryTask extends Model
 {
@@ -20,11 +21,16 @@ class TemporaryTask extends Model
         'user_id',
     ];
 
-    public function setDateAttribute($value)
-    {
-        $this->attributes['date'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
-    }
+    protected $casts = [
+        'date' => 'date',
+    ];
 
+//    protected function date(): Attribute
+//    {
+//        return Attribute::make(
+//            get: fn ($value) => Carbon::parse($value)->format('d/m/Y'),
+//        );
+//    }
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -33,11 +39,5 @@ class TemporaryTask extends Model
     public function setImageAttribute($value)
     {
         return $value ?? asset('storage/img/no_image.png');
-    }
-
-    public function getDateAttribute($value)
-    {
-        $carbonDate = is_string($value) ? \Carbon\Carbon::parse($value) : $value;
-        return $carbonDate instanceof Carbon ? $carbonDate->format('d/m/Y') : $value;
     }
 }

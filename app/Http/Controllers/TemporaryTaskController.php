@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TemporaryTaskResource;
 use App\Models\TemporaryTask;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\TemporaryTaskRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -16,7 +18,11 @@ class TemporaryTaskController extends Controller
      */
     public function index()
     {
-        //
+        $task = TemporaryTask::query()->inRandomOrder()->first();
+        return Inertia::render('Task/TemporaryTask', [
+            'unique_task' => new TemporaryTaskResource($task),
+            'temporary_tasks' => TemporaryTaskResource::collection(auth()->user()->temporary_task()->paginate(10)),
+        ]);
     }
 
     /**
@@ -32,10 +38,7 @@ class TemporaryTaskController extends Controller
      */
     public function show(TemporaryTask $temporaryTask)
     {
-//        dd($temporaryTask->get());
-        return Inertia::render('Task/TemporaryTask', [
-            'temporary_tasks' => $temporaryTask->get(),
-        ]);
+        //
     }
 
     /**
@@ -43,19 +46,6 @@ class TemporaryTaskController extends Controller
      */
     public function store(Request $request)
     {
-        /**
-         * Change status string value to boolean.
-         */
-        function string_to_boolean($status)
-        {
-            $statusYes = '/sim/i';
-            if (preg_match($statusYes, $status)) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
         $file = $request->file('file');
         if ($file) {
             $jump_first_line = 0;
@@ -73,11 +63,11 @@ class TemporaryTaskController extends Controller
                     $description = $columns[1];
                     $date = $columns[2];
                     $status = $columns[3];
-                    $status = string_to_boolean($status);
+                    $status = !!preg_match('/sim/i', $status);
                     $task = new TemporaryTask();
                     $task->name = $title;
                     $task->description = $description;
-                    $task->date = $date;
+                    $task->date = Carbon::hasFormat($date, 'd/m/Y') ? Carbon::createFromFormat('d/m/Y', $date) : Carbon::now();
                     $task->status = $status;
                     $task->user_id = auth()->user()->id;
                     $task->save();
@@ -110,7 +100,8 @@ class TemporaryTaskController extends Controller
             'date' => $request->input('date'),
             'image' => $request->input('image'),
         ]);
-        return Redirect::route('temporary.show');
+
+        return Redirect::route('temporary.index');
     }
 
     /**
@@ -119,5 +110,10 @@ class TemporaryTaskController extends Controller
     public function destroy(TemporaryTask $temporaryTask)
     {
         //
+    }
+
+    public function import(Request $request, TemporaryTask $temporaryTask)
+    {
+        dd($request, $temporaryTask->get());
     }
 }

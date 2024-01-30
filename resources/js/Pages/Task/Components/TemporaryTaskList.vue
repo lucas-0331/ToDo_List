@@ -3,16 +3,15 @@ import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Modal from "@/Components/Modal.vue";
 import {router, useForm} from "@inertiajs/vue3";
-
-const { temporary_tasks } = defineProps(['temporary_tasks']);
-
+const { unique_task, temporary_tasks} = defineProps([ 'unique_task', 'temporary_tasks']);
+console.log(unique_task);
 const tasks = ref({});
 const modal = ref(false);
 const update = ref(false);
 
 const layoutGrid = [
-    'grid-cols-[140px_180px_100px]',
-    'md:grid-cols-[140px_240px_1fr_100px]',
+    'grid-cols-[140px_140px_180px_100px]',
+    'md:grid-cols-[140px_140px_240px_1fr_100px]',
     'grid-rows-[85px]',
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
@@ -21,7 +20,6 @@ const layoutGrid = [
 function onShowModal() {
     modal.value = true;
 }
-console.log(temporary_tasks);
 const editTemporaryTask = (idTemporaryTask) => {
     if(idTemporaryTask) {
         router.get(route('temporary.edit', idTemporaryTask));
@@ -33,14 +31,15 @@ function deleteTemporaryTask(idTemporaryTask) {
 </script>
 
 <template>
-    <div v-if="!temporary_tasks.length" class="p-6 text-gray-900">
+    <div v-if="!temporary_tasks.data.length" class="p-6 text-gray-900">
         <slot>
 
         </slot>
     </div>
-
     <div v-else class="p-6 text-gray-900">
-        <div v-for="task in temporary_tasks"
+        <h1>TESTE: {{unique_task}}</h1>
+
+        <div v-for="task in temporary_tasks.data"
              :key="task.id"
              class="grid shrink-0 my-2 px-2 items-center justify-center border-b-2 first:border-t-2"
              :class="layoutGrid"
@@ -49,6 +48,11 @@ function deleteTemporaryTask(idTemporaryTask) {
                :class="task.date"
             >
                 {{ task.date }}
+            </p>
+            <p class="font-bold"
+               :class="task.date"
+            >
+                {{ task.teenDays }}
             </p>
             <h3 class="font-bold">
                 {{ task.name }}

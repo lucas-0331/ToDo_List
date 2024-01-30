@@ -35,11 +35,12 @@ Route::middleware('auth')->name('task.')->group(function () {
 });
 
 Route::middleware('auth')->name('temporary.')->group(function () {
-    Route::get('temporary/task/show', [TemporaryTaskController::class, 'show'])->name('show');
+    Route::get('temporary/task/index', [TemporaryTaskController::class, 'index'])->name('index');
     Route::post('temporary/task/store', [TemporaryTaskController::class, 'store'])->name('store');
     Route::get('temporary/{temporaryTask}/edit', [TemporaryTaskController::class, 'edit'])->name('edit');
     Route::patch('temporary/{temporaryTask}/update', [TemporaryTaskController::class, 'update'])->name('update');
     Route::delete('temporary/{temporaryTask}/destroy', [TemporaryTaskController::class, 'destroy'])->name('destroy');
+    Route::get('temporary/task/import', [TemporaryTaskController::class, 'import'])->name('import');
 });
 
 Route::middleware('auth')->group(function () {
