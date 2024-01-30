@@ -25,12 +25,6 @@ class TemporaryTask extends Model
         'date' => 'date',
     ];
 
-//    protected function date(): Attribute
-//    {
-//        return Attribute::make(
-//            get: fn ($value) => Carbon::parse($value)->format('d/m/Y'),
-//        );
-//    }
     public function user()
     {
         return $this->belongsTo(User::class);
