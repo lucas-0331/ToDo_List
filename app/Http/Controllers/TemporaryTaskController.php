@@ -18,12 +18,18 @@ class TemporaryTaskController extends Controller
      */
     public function index()
     {
-        $task = TemporaryTask::query()->inRandomOrder()->first();
         return Inertia::render('Task/TemporaryTask', [
-            'unique_task' => new TemporaryTaskResource($task),
             'temporary_tasks' => TemporaryTaskResource::collection(auth()->user()->temporary_task()->paginate(10)),
         ]);
     }
+//    public function index()
+//    {
+//        $task = TemporaryTask::query()->inRandomOrder()->first();
+//        return Inertia::render('Task/TemporaryTask', [
+//            'unique_task' => new TemporaryTaskResource($task),
+//            'temporary_tasks' => TemporaryTaskResource::collection(auth()->user()->temporary_task()->paginate(10)),
+//        ]);
+//    }
 
     /**
      * Show the form for creating a new resource.
@@ -47,36 +53,40 @@ class TemporaryTaskController extends Controller
     public function store(Request $request)
     {
         $file = $request->file('file');
-        if ($file) {
-            $jump_first_line = 0;
-            $content = file_get_contents($file->getRealPath());
-            $lines = explode("\r\n", $content);
-
-            foreach ($lines as $line) {
-                if ($jump_first_line === 1) {
-                    $columns = preg_split('/[;|\r\n]/', $line, 0, PREG_SPLIT_NO_EMPTY);
-                    if (isset($columns[0])) {
-                        $title = $columns[0];
-                    } else {
-                        continue;
-                    }
-                    $description = $columns[1];
-                    $date = $columns[2];
-                    $status = $columns[3];
-                    $status = !!preg_match('/sim/i', $status);
-                    $task = new TemporaryTask();
-                    $task->name = $title;
-                    $task->description = $description;
-                    $task->date = Carbon::hasFormat($date, 'd/m/Y') ? Carbon::createFromFormat('d/m/Y', $date) : Carbon::now();
-                    $task->status = $status;
-                    $task->user_id = auth()->user()->id;
-                    $task->save();
-                } else {
-                    $jump_first_line++;
-                    continue;
-                }
-            }
-        }
+//        if ($file) {
+//            $jump_first_line = 0;
+//            $content = file_get_contents($file->getRealPath());
+//            $lines = explode("\r\n", $content);
+//
+//            foreach ($lines as $line) {
+//                if ($jump_first_line === 1) {
+//                    $columns = preg_split('/[;|\r\n]/', $line, 0, PREG_SPLIT_NO_EMPTY);
+//                    if (isset($columns[0])) {
+//                        $title = $columns[0];
+//                    } else {
+//                        continue;
+//                    }
+//                    $description = $columns[1];
+//                    $date = $columns[2];
+//                    $status = $columns[3];
+//                    $status = !!preg_match('/sim/i', $status);
+//                    $task = new TemporaryTask();
+//                    $task->name = $title;
+//                    $task->description = $description;
+//                    $task->date = Carbon::hasFormat($date, 'd/m/Y') ? Carbon::createFromFormat('d/m/Y', $date) : Carbon::now();
+//                    $task->status = $status;
+//                    $task->user_id = auth()->user()->id;
+//                    $task->save();
+//                } else {
+//                    $jump_first_line++;
+//                    continue;
+//                }
+//            }
+//        }
+        return Redirect::route('temporary.index')->with([
+            'message' => 'Your file CSV imported with success!',
+            'status' => 'success',
+        ]);
     }
 
     /**
