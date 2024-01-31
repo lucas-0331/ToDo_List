@@ -1,17 +1,17 @@
 <script setup>
 import { ref } from "vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { router } from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
-import {router, useForm} from "@inertiajs/vue3";
-const { unique_task, temporary_tasks} = defineProps([ 'unique_task', 'temporary_tasks']);
-console.log(unique_task);
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+
+const { temporary_tasks } = defineProps(['temporary_tasks']);
 const tasks = ref({});
 const modal = ref(false);
 const update = ref(false);
 
 const layoutGrid = [
-    'grid-cols-[140px_140px_180px_100px]',
-    'md:grid-cols-[140px_140px_240px_1fr_100px]',
+    'grid-cols-[140px_180px_100px]',
+    'md:grid-cols-[140px_240px_1fr_100px]',
     'grid-rows-[85px]',
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
@@ -37,7 +37,6 @@ function deleteTemporaryTask(idTemporaryTask) {
         </slot>
     </div>
     <div v-else class="p-6 text-gray-900">
-        <h1>TESTE: {{unique_task}}</h1>
 
         <div v-for="task in temporary_tasks.data"
              :key="task.id"
@@ -49,23 +48,12 @@ function deleteTemporaryTask(idTemporaryTask) {
             >
                 {{ task.date }}
             </p>
-            <p class="font-bold"
-               :class="task.date"
-            >
-                {{ task.teenDays }}
-            </p>
             <h3 class="font-bold">
                 {{ task.name }}
             </h3>
             <p class="hidden md:block font-light text-sm">
                 {{ task.description }}
             </p>
-<!--            <input type="checkbox"-->
-<!--                   :checked="task.status"-->
-<!--                   v-model="task.status"-->
-<!--                   class="justify-self-center size-8 rounded-full cursor-pointer"-->
-<!--                   @click="newStatus(task.id, task.status)"-->
-<!--            >-->
 
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
 
