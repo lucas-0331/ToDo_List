@@ -6,9 +6,6 @@ defineProps({
         type: Object,
         required: true,
     },
-    unique_task: {
-        type: Object,
-    },
 });
 function onSubmit() {
     router.get(route('temporary.import'));
@@ -18,7 +15,6 @@ function onSubmit() {
 <template>
 
     <AuthenticatedLayout>
-        {{unique_task.data}}
     <template #header>
         <div class="flex w-full justify-end">
             <button @click.prevent="onSubmit"
