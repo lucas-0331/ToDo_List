@@ -6,11 +6,10 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import ShowTemporaryTask from "@/Pages/Task/Components/TemporaryTaskList.vue";
 
-const { temporary_tasks, unique_task } = defineProps(['unique_task', 'temporary_tasks']);
+const { temporary_tasks } = defineProps(['temporary_tasks']);
 const form = useForm({
     file: null,
 });
-console.log(unique_task);
 const importSuccess = ref(false);
 const fetchTemporaryTasks = () => {
     router.get(route('temporary.index'));
@@ -18,19 +17,6 @@ const fetchTemporaryTasks = () => {
 const handleSubmit = () => {
      form.post(route('temporary.store'));
 }
-watchEffect(async () => {
-    const fetchData = async () => {
-        if (form.progress && form.progress.percentage === 100) {
-            importSuccess.value = true;
-            setTimeout(() => {
-                importSuccess.value = false;
-            }, 3000);
-            await fetchTemporaryTasks();
-        }
-    };
-    await fetchData();
-});
-
 </script>
 
 <template>
