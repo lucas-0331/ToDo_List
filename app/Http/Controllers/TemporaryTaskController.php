@@ -57,7 +57,7 @@ class TemporaryTaskController extends Controller
      * @param \App\Http\Requests\TemporaryTaskStoreRequest $request
      * @return
      */
-    public function store(Request $request)
+    public function store(TemporaryTaskStoreRequest $request)
     {
         // Validar a Request.
         $header = $request->validated('header');
