@@ -1,7 +1,7 @@
 <script setup>
-import TemporaryTaskList from "@/Pages/Task/Components/TemporaryTaskList.vue";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head} from "@inertiajs/vue3";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import TemporaryTaskList from "@/Pages/Task/Components/TemporaryTaskList.vue";
 defineProps({
     temporary_tasks: {
         type: Object,
