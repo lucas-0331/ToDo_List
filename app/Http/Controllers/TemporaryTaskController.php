@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TemporaryTaskResource;
-use App\Models\TemporaryTask;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use App\Http\Requests\TemporaryTaskRequest;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Models\TemporaryTask;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
+use Spatie\SimpleExcel\SimpleExcelReader;
+use App\Http\Resources\TemporaryTaskResource;
+use App\Http\Requests\TemporaryTaskStoreRequest;
 
 
 class TemporaryTaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing with temporary task.
+     *
+     * @return \Inertia\Response
+     *
      */
     public function index()
     {
@@ -48,41 +52,36 @@ class TemporaryTaskController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created temporary task in storage.
+     *
+     * @param \App\Http\Requests\TemporaryTaskStoreRequest $request
+     * @return
      */
     public function store(Request $request)
     {
+        // Validar a Request.
+        $header = $request->validated('header');
         $file = $request->file('file');
-//        if ($file) {
-//            $jump_first_line = 0;
-//            $content = file_get_contents($file->getRealPath());
-//            $lines = explode("\r\n", $content);
-//
-//            foreach ($lines as $line) {
-//                if ($jump_first_line === 1) {
-//                    $columns = preg_split('/[;|\r\n]/', $line, 0, PREG_SPLIT_NO_EMPTY);
-//                    if (isset($columns[0])) {
-//                        $title = $columns[0];
-//                    } else {
-//                        continue;
-//                    }
-//                    $description = $columns[1];
-//                    $date = $columns[2];
-//                    $status = $columns[3];
-//                    $status = !!preg_match('/sim/i', $status);
-//                    $task = new TemporaryTask();
-//                    $task->name = $title;
-//                    $task->description = $description;
-//                    $task->date = Carbon::hasFormat($date, 'd/m/Y') ? Carbon::createFromFormat('d/m/Y', $date) : Carbon::now();
-//                    $task->status = $status;
-//                    $task->user_id = auth()->user()->id;
-//                    $task->save();
-//                } else {
-//                    $jump_first_line++;
-//                    continue;
-//                }
-//            }
-//        }
+
+        if ($file){
+            //        $file_name = time().'-'.$file->getClientOriginalName();
+            $file_name = $file->getClientOriginalName(); //Temporary
+            $file_path = $file->storeAs('tmp', $file_name, 'local');
+            $rows = SimpleExcelReader::create(Storage::path($file_path))->useDelimiter(';');
+
+            if (!$header) $rows->noHeaderRow();
+
+            $rows->useHeaders(['title', 'description', 'date', 'status'])->getRows()->each(function ($row){
+                TemporaryTask::create([
+                    'name' => $row['title'],
+                    'description' => $row['description'],
+                    'date' => \Carbon\Carbon::createFromFormat('d/m/Y', $row['date']),
+                    'status' => !!preg_match('/sim/i', $row['status']),
+                    'user_id' => auth()->user()->id,
+                ]);
+            });
+        }
+
         return Redirect::route('temporary.index')->with([
             'message' => 'Your file CSV imported with success!',
             'status' => 'success',
@@ -90,36 +89,19 @@ class TemporaryTaskController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TemporaryTask $temporaryTask)
-    {
-        return Inertia::render('Task/EditTemporary', [
-            'task' => $temporaryTask,
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TemporaryTask $temporaryTask)
-    {
-        $temporaryTask->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'date' => $request->input('date'),
-            'image' => $request->input('image'),
-        ]);
-
-        return Redirect::route('temporary.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Remove the specified temporary task from storage.
+     *
+     * @param \App\Models\TemporaryTask $temporaryTask
+     * @return \Illuminate\Http\RedirectResponse
+     *
      */
     public function destroy(TemporaryTask $temporaryTask)
     {
-        //
+        $temporaryTask->delete();
+        return Redirect::route('temporary.index')->with([
+            'message' => 'Your temporary task deleted with success!',
+            'status' => 'success',
+        ]);
     }
 
     public function import(Request $request, TemporaryTask $temporaryTask)
