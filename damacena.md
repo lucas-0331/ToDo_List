@@ -13,12 +13,12 @@
 
 
 Regras:
-+ [x] Obrigatoriamente precisa ser csv.
++  Obrigatoriamente precisa ser csv.
 
 
 Obrigatorios:
-+ [x] name: String
-+ [x] description: String
-+ [x] date: Date
-+ [x] status: boolean
++  name: String
++  description: String
++  date: Date
++  status: boolean
 
