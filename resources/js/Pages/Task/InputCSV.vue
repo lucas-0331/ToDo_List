@@ -5,7 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const { temporary_tasks } = defineProps(['temporary_tasks']);
 const form = useForm({
-    file: null,
+    file: [],
     header: false,
 });
 const handleSubmit = () => {
@@ -28,8 +28,9 @@ const handleSubmit = () => {
                     type="file"
                     class="mt-1 block w-full"
                     accept=".csv"
-                    name="file_csv"
-                    @input="form.file = $event.target.files[0]"
+                    @input="form.file = $event.target.files"
+                    name="file[]"
+                    multiple="multiple"
                 />
                 <span v-if="form.errors.file" class="text-red-600 my-1">{{ form.errors.file }}</span>
                 <div class="flex gap-x-2 items-center my-3">
