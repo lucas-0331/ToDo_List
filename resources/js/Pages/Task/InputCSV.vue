@@ -9,11 +9,9 @@ import ShowTemporaryTask from "@/Pages/Task/Components/TemporaryTaskList.vue";
 const { temporary_tasks } = defineProps(['temporary_tasks']);
 const form = useForm({
     file: null,
+    header: false,
 });
 const importSuccess = ref(false);
-const fetchTemporaryTasks = () => {
-    router.get(route('temporary.index'));
-}
 const handleSubmit = () => {
      form.post(route('temporary.store'));
 }
@@ -35,13 +33,16 @@ const handleSubmit = () => {
                     accept=".csv"
                     name="file_csv"
                     @input="form.file = $event.target.files[0]"
-                    required
                 />
                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                     {{ form.progress.percentage }}%
                 </progress>
                 <div v-if="form.progress && form.progress.percentage === 100">
                     Import Successfully
+                </div>
+                <div class="my-2">
+                    <input type="checkbox" v-model="form.header"> Does this file have a header?
+                    <span v-if="form.errors.header" class="text-red-600 my-1">{{ form.errors.header }}</span>
                 </div>
             </div>
             <PrimaryButton class="hover:bg-gray-700" type="submit">
