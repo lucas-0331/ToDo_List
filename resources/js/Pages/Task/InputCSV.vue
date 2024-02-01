@@ -35,14 +35,11 @@ const handleSubmit = () => {
                     @input="form.file = $event.target.files[0]"
                 />
                 <span v-if="form.errors.file" class="text-red-600 my-1">{{ form.errors.file }}</span>
-                <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                    {{ form.progress.percentage }}%
-                </progress>
-                <div v-if="form.progress && form.progress.percentage === 100">
-                    Import Successfully
-                </div>
-                <div class="my-2">
-                    <input type="checkbox" v-model="form.header"> Does this file have a header?
+                <div class="flex gap-x-2 items-center my-3">
+                    <input v-model="form.header" id="header" type="checkbox" />
+                    <label for="header">
+                        Does this file have a header?
+                    </label>
                     <span v-if="form.errors.header" class="text-red-600 my-1">{{ form.errors.header }}</span>
                 </div>
             </div>
