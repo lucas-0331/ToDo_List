@@ -20,7 +20,6 @@ class TemporaryTaskResource extends JsonResource
             'description' => $this->description,
             'date' => $this->date->format('d/m/Y'),
             'status' => $this->status,
-            'teenDays' => $this->date->diffForHumans($this->date->addDays(random_int(1, 100))),
         ];
     }
 }
