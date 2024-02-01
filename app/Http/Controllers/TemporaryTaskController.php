@@ -59,13 +59,11 @@ class TemporaryTaskController extends Controller
      */
     public function store(TemporaryTaskStoreRequest $request)
     {
-        // Validar a Request.
         $header = $request->validated('header');
         $file = $request->file('file');
 
         if ($file){
-            //        $file_name = time().'-'.$file->getClientOriginalName();
-            $file_name = $file->getClientOriginalName(); //Temporary
+            $file_name = time().'-'.$file->getClientOriginalName();
             $file_path = $file->storeAs('tmp', $file_name, 'local');
             $rows = SimpleExcelReader::create(Storage::path($file_path))->useDelimiter(';');
 
