@@ -24,6 +24,7 @@ const handleSubmit = () => {
               enctype="multipart/form-data"
               class="flex justify-between"
         >
+
             <div>
                 <InputLabel for="file" value="File" />
                 <input
@@ -34,6 +35,7 @@ const handleSubmit = () => {
                     name="file_csv"
                     @input="form.file = $event.target.files[0]"
                 />
+                <span v-if="form.errors.file" class="text-red-600 my-1">{{ form.errors.file }}</span>
                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                     {{ form.progress.percentage }}%
                 </progress>
