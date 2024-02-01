@@ -1,5 +1,6 @@
 <script setup>
 import {Head} from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import TemporaryTaskList from "@/Pages/Task/Components/TemporaryTaskList.vue";
 defineProps({
