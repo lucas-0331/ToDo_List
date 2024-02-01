@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use Illuminate\Http\Request;
+use App\Models\Task;
 use App\Models\TemporaryTask;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -97,13 +97,21 @@ class TemporaryTaskController extends Controller
     {
         $temporaryTask->delete();
         return Redirect::route('temporary.index')->with([
-            'message' => 'Your temporary task deleted with success!',
+            'message' => 'Sua tarefa '. $temporaryTask->name .' deletada com sucesso!',
             'status' => 'success',
         ]);
     }
 
-    public function import(Request $request, TemporaryTask $temporaryTask)
+    public function import(TemporaryTask $temporaryTask)
     {
-        dd($request, $temporaryTask->get());
+        $temporary_tasks = $temporaryTask::all();
+        foreach ($temporary_tasks as $temporary_task) {
+            Task::create($temporary_task->toArray());
+        }
+        TemporaryTask::truncate();
+        return Redirect::route('dashboard')->with([
+            'message' => 'Tarefas importadas com sucesso!',
+            'status' => 'success',
+        ]);
     }
 }
