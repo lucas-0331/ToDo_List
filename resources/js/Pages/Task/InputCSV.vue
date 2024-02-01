@@ -1,10 +1,9 @@
 <script setup>
-import { ref, watchEffect } from "vue";
-import { useForm, router } from "@inertiajs/vue3";
+import { ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import ShowTemporaryTask from "@/Pages/Task/Components/TemporaryTaskList.vue";
 
 const { temporary_tasks } = defineProps(['temporary_tasks']);
 const form = useForm({
