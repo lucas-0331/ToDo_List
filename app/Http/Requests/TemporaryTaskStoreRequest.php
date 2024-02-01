@@ -23,7 +23,8 @@ class TemporaryTaskStoreRequest extends FormRequest
     {
         return [
             'header' => ['boolean'],
-            'file' => ['required', 'file']
+            'file' => ['required', 'array'],
+            'file.*' => ['file'],
         ];
     }
 
