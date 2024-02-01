@@ -5,8 +5,9 @@ import Modal from "@/Components/Modal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const { temporary_tasks } = defineProps(['temporary_tasks']);
-const tasks = ref({});
 const modal = ref(false);
+const taskId = ref();
+const taskName = ref('');
 
 const layoutGrid = [
     'grid-cols-[140px_180px_50px]',
@@ -16,12 +17,14 @@ const layoutGrid = [
     'lg:grid-rows-[minmax(50px,_85px)]',
 ];
 
-function onShowModal() {
+function onShowModal(idTemporaryTask, nameTemporaryTask) {
+    taskId.value = idTemporaryTask;
+    taskName.value = nameTemporaryTask;
     modal.value = !modal.value;
 }
-function deleteTemporaryTask(idTemporaryTask) {
-    router.delete(route('temporary.destroy', idTemporaryTask));
-    onShowModal();
+function deleteTemporaryTask() {
+    router.delete(route('temporary.destroy', taskId.value));
+    onShowModal(null, '');
 }
 </script>
 
@@ -51,7 +54,7 @@ function deleteTemporaryTask(idTemporaryTask) {
             </p>
 
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
-                <button @click.prevent="onShowModal">
+                <button @click.prevent="onShowModal(task.id, task.name)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#D32500" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <path d="M4 7l16 0" />
@@ -61,33 +64,33 @@ function deleteTemporaryTask(idTemporaryTask) {
                         <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                     </svg>
                 </button>
-
-                <Modal :show="modal">
-                    <div class="text-center pt-2 font-bold">
-                        <p>
-                            Do you really want to delete this task?
-                        </p>
-                    </div>
-                    <div class="flex justify-between p-3">
-                        <PrimaryButton
-                            class="bg-green-600"
-                            @click.prevent="deleteTemporaryTask(task.id)"
-                        >
-                            Yes
-                        </PrimaryButton>
-
-                        <PrimaryButton
-                            class="bg-red-700"
-                            @click.prevent="onShowModal"
-                        >
-                            Cancel
-                        </PrimaryButton>
-                    </div>
-                </Modal>
-
             </div>
         </div>
     </div>
+
+    <Modal :show="modal">
+        <div class="text-center pt-2 font-bold">
+            <p>
+                Do you really want to delete task {{ taskName }}?
+            </p>
+        </div>
+        <div class="flex justify-between p-3">
+            <PrimaryButton
+                class="bg-green-600"
+                @click.prevent="deleteTemporaryTask"
+            >
+                Yes
+            </PrimaryButton>
+
+            <PrimaryButton
+                class="bg-red-700"
+                @click.prevent="onShowModal"
+            >
+                Cancel
+            </PrimaryButton>
+        </div>
+    </Modal>
+
 </template>
 
 <style scoped>
