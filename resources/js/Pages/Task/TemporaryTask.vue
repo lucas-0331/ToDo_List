@@ -1,6 +1,7 @@
 <script setup>
 import TemporaryTaskList from "@/Pages/Task/Components/TemporaryTaskList.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import {Head} from "@inertiajs/vue3";
 defineProps({
     temporary_tasks: {
         type: Object,
@@ -13,7 +14,7 @@ function onSubmit() {
 </script>
 
 <template>
-
+    <Head title="Temporary Task" />
     <AuthenticatedLayout>
     <template #header>
         <div class="flex w-full justify-end">
