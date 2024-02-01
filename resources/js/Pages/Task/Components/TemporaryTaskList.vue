@@ -7,26 +7,21 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 const { temporary_tasks } = defineProps(['temporary_tasks']);
 const tasks = ref({});
 const modal = ref(false);
-const update = ref(false);
 
 const layoutGrid = [
-    'grid-cols-[140px_180px_100px]',
-    'md:grid-cols-[140px_240px_1fr_100px]',
+    'grid-cols-[140px_180px_50px]',
+    'md:grid-cols-[140px_240px_1fr_50px]',
     'grid-rows-[85px]',
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
 ];
 
 function onShowModal() {
-    modal.value = true;
-}
-const editTemporaryTask = (idTemporaryTask) => {
-    if(idTemporaryTask) {
-        router.get(route('temporary.edit', idTemporaryTask));
-    }
+    modal.value = !modal.value;
 }
 function deleteTemporaryTask(idTemporaryTask) {
     router.delete(route('temporary.destroy', idTemporaryTask));
+    onShowModal();
 }
 </script>
 
@@ -56,15 +51,6 @@ function deleteTemporaryTask(idTemporaryTask) {
             </p>
 
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
-
-                <button @click="editTemporaryTask(task.id)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0093FF" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                        <path d="M16 5l3 3" />
-                    </svg>
-                </button>
                 <button @click.prevent="onShowModal">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#D32500" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
