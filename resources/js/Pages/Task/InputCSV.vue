@@ -1,7 +1,5 @@
 <script setup>
-import { ref } from "vue";
 import { useForm } from "@inertiajs/vue3";
-import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
@@ -10,7 +8,6 @@ const form = useForm({
     file: null,
     header: false,
 });
-const importSuccess = ref(false);
 const handleSubmit = () => {
      form.post(route('temporary.store'));
 }
@@ -54,11 +51,5 @@ const handleSubmit = () => {
                 </svg>
             </PrimaryButton>
         </form>
-        <Modal :show="importSuccess" :max-width="'sm'">
-            <div class="m-2 h-24 flex flex-col justify-center items-center">
-                <input type="checkbox" class="rounded-full h-20 w-20" :checked="true" disabled>
-                <p class="font-bold ">Successful</p>
-            </div>
-        </Modal>
     </div>
 </template>
