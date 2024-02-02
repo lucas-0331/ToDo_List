@@ -1,12 +1,12 @@
 + [x] Utilizar o Pacote: https://github.com/spatie/simple-excel
 + [x] Dar ao usuario a possibilidade de ter ou não cabeçalho no arquivo
-- [ ] Possibilidade de multiplos arquivos.
+- [x] Possibilidade de multiplos arquivos.
 
 + [x] Criar a tela de Arquivos Temporários.
 [Exibir os arquivos. (Ver as linhas, excluir)]
 
 
-+ [ ] Transformar a linha em tarefa
++ [x] Transformar a linha em tarefa
 + [x] Transformar todas as linhas em tarefa (Excluir o arquivo)
 + [x] Excluir uma linha
 
