@@ -16,7 +16,6 @@ const layoutGrid = [
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
 ];
-
 function onShowModal(idTemporaryTask, nameTemporaryTask) {
     taskId.value = idTemporaryTask;
     taskName.value = nameTemporaryTask;
@@ -31,9 +30,36 @@ const selectedTask = (idTemporaryTask, currentFlag) => {
         router.patch(route('temporary.flag', idTemporaryTask), {flag: currentFlag});
     }
 }
+const goToPage = (url) => {
+    router.visit(url);
+}
 </script>
 
 <template>
+    <div class="paginate">
+        <div v-show="temporary_tasks.links.first != temporary_tasks.links.last"
+             class="flex px-4 pt-6 gap-4 justify-center static text-lg"
+        >
+            <div class="static pr-10">
+                <button v-show="temporary_tasks.links.prev"
+                        @click="goToPage(temporary_tasks.links.prev)"
+                >
+                    Prev
+                </button>
+            </div>
+            <div class="font-bold absolute">
+                {{temporary_tasks.meta.current_page}}
+            </div>
+            <div class="static pl-10">
+                <button v-show="temporary_tasks.links.next"
+                        @click="goToPage(temporary_tasks.links.next)"
+                >
+                    Next
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div v-if="!temporary_tasks.data.length" class="p-6 text-gray-900">
         <slot>
 
