@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('temporary_tasks', function (Blueprint $table) {
             $table->id();
+            $table->boolean('flag')->default(false);
             $table->string('name');
             $table->text('description');
             $table->date('date');
