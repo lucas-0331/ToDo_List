@@ -41,6 +41,8 @@ Route::middleware('auth')->name('temporary.')->group(function () {
     Route::patch('temporary/{temporaryTask}/update', [TemporaryTaskController::class, 'update'])->name('update');
     Route::delete('temporary/{temporaryTask}/destroy', [TemporaryTaskController::class, 'destroy'])->name('destroy');
     Route::get('temporary/task/import', [TemporaryTaskController::class, 'import'])->name('import');
+    Route::patch('temporary/{temporaryTask}/flag', [TemporaryTaskController::class, 'flag'])->name('flag');
+    Route::patch('temporary/all_task', [TemporaryTaskController::class, 'all_task'])->name('all_task');
 });
 
 Route::middleware('auth')->group(function () {
