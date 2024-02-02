@@ -13,6 +13,7 @@ class TemporaryTask extends Model
     protected $table = 'temporary_tasks';
 
     protected $fillable = [
+        'flag',
         'name',
         'description',
         'date',

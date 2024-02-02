@@ -10,8 +10,8 @@ const taskId = ref();
 const taskName = ref('');
 
 const layoutGrid = [
-    'grid-cols-[140px_180px_50px]',
-    'md:grid-cols-[140px_240px_1fr_50px]',
+    'grid-cols-[50px_140px_180px_50px]',
+    'md:grid-cols-[50px_140px_240px_1fr_50px]',
     'grid-rows-[85px]',
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
@@ -25,6 +25,11 @@ function onShowModal(idTemporaryTask, nameTemporaryTask) {
 function deleteTemporaryTask() {
     router.delete(route('temporary.destroy', taskId.value));
     onShowModal(null, '');
+}
+const selectedTask = (idTemporaryTask, currentFlag) => {
+    if (idTemporaryTask) {
+        router.patch(route('temporary.flag', idTemporaryTask), {flag: currentFlag});
+    }
 }
 </script>
 
@@ -41,6 +46,12 @@ function deleteTemporaryTask() {
              class="grid shrink-0 my-2 px-2 items-center justify-center border-b-2 first:border-t-2"
              :class="layoutGrid"
         >
+            <input type="checkbox"
+                   @click="selectedTask(task.id, task.flag)"
+                   :checked="task.flag"
+                   class="size-8 rounded-full cursor-pointer border-slate-400"
+
+            />
             <p class="font-bold"
                :class="task.date"
             >

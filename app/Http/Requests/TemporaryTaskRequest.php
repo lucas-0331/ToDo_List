@@ -22,6 +22,7 @@ class TemporaryTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'flag' => ['boolean'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'date' => ['required'],

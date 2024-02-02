@@ -75,10 +75,9 @@ function onYesClick(idTask) {
                 {{ task.description }}
             </p>
             <input type="checkbox"
-                   :checked="task.status"
-                   v-model="task.status"
-                   class="justify-self-center size-8 rounded-full cursor-pointer"
                    @click="newStatus(task.id, task.status)"
+                   :checked="task.status"
+                   class="justify-self-center size-8 rounded-full cursor-pointer"
             >
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
 
