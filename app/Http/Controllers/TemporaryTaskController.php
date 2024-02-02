@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Task;
+use Illuminate\Http\Request;
 use App\Models\TemporaryTask;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -60,25 +61,27 @@ class TemporaryTaskController extends Controller
     public function store(TemporaryTaskStoreRequest $request)
     {
         $header = $request->validated('header');
-        $file = $request->file('file');
+        $files = $request->file('file');
+        foreach ($files as $file) {
+            if ($file){
+                $file_name = time().'-'.$file->getClientOriginalName();
+                $file_path = $file->storeAs('tmp', $file_name, 'local');
+                $rows = SimpleExcelReader::create(Storage::path($file_path))->useDelimiter(';');
 
-        if ($file){
-            $file_name = time().'-'.$file->getClientOriginalName();
-            $file_path = $file->storeAs('tmp', $file_name, 'local');
-            $rows = SimpleExcelReader::create(Storage::path($file_path))->useDelimiter(';');
+                if (!$header) $rows->noHeaderRow();
 
-            if (!$header) $rows->noHeaderRow();
-
-            $rows->useHeaders(['title', 'description', 'date', 'status'])->getRows()->each(function ($row){
-                TemporaryTask::create([
-                    'name' => $row['title'],
-                    'description' => $row['description'],
-                    'date' => \Carbon\Carbon::createFromFormat('d/m/Y', $row['date']),
-                    'status' => !!preg_match('/sim/i', $row['status']),
-                    'user_id' => auth()->user()->id,
-                ]);
-            });
+                $rows->useHeaders(['title', 'description', 'date', 'status'])->getRows()->each(function ($row){
+                    TemporaryTask::create([
+                        'name' => $row['title'],
+                        'description' => $row['description'],
+                        'date' => \Carbon\Carbon::createFromFormat('d/m/Y', $row['date']),
+                        'status' => !!preg_match('/sim/i', $row['status']),
+                        'user_id' => auth()->user()->id,
+                    ]);
+                });
+            }
         }
+
 
         return Redirect::route('temporary.index')->with([
             'message' => 'Your file CSV imported with success!',
@@ -104,9 +107,19 @@ class TemporaryTaskController extends Controller
 
     public function import(TemporaryTask $temporaryTask)
     {
+        $cont = 0;
         $temporary_tasks = $temporaryTask::all();
         foreach ($temporary_tasks as $temporary_task) {
-            Task::create($temporary_task->toArray());
+            if ($temporary_task->flag === 1) {
+                $cont++;
+                Task::create($temporary_task->toArray());
+            }
+        }
+        if ($cont == 0) {
+            return Redirect::route('temporary.index')->with([
+                'message' => 'Não selecionou nenhuma tarefa!',
+                'status' => 'warning',
+            ]);
         }
         TemporaryTask::truncate();
         return Redirect::route('dashboard')->with([
@@ -114,4 +127,19 @@ class TemporaryTaskController extends Controller
             'status' => 'success',
         ]);
     }
+
+    public function flag(Request $request, TemporaryTask $temporaryTask)
+    {
+        $temporaryTask->update([
+            'flag' => !$request->input('flag'),
+        ]);
+        return Redirect::route('temporary.index');
+    }
+
+    public function all_task(Request $request)
+    {
+        TemporaryTask::query()->update(['flag' => $request->input('current')]);
+        return Redirect::route('temporary.index');
+    }
+
 }
