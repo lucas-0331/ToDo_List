@@ -26,7 +26,9 @@ function allTemporaryTask() {
     <Head title="Temporary Task" />
     <AuthenticatedLayout>
     <template #header>
-        <div class="flex justify-between">
+        <div v-show="temporary_tasks.data.length"
+             class="flex justify-between"
+        >
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Temporary Tasks</h2>
                 <button @click.prevent="allTemporaryTask"
