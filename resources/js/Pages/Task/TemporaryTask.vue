@@ -1,5 +1,5 @@
 <script setup>
-import { ref,onMounted } from "vue";
+import { ref } from "vue";
 import { Head } from "@inertiajs/vue3";
 import { router } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
@@ -12,9 +12,17 @@ defineProps({
 });
 
 const current = ref(false);
-
+const selectedTasks = ref([]);
+function handleTask(id) {
+    const index = selectedTasks.value.findIndex((item) => item === id);
+    if (index === -1) {
+        selectedTasks.value.push(id);
+    } else {
+        selectedTasks.value.splice(index, 1);
+    }
+}
 function onSubmit() {
-    router.get(route('temporary.import'));
+    router.post(route('temporary.import', {selected: selectedTasks}));
 }
 function allTemporaryTask() {
     router.patch(route('temporary.all_task'), {current: current.value});
@@ -52,7 +60,7 @@ function allTemporaryTask() {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <TemporaryTaskList :temporary_tasks="temporary_tasks">
+                    <TemporaryTaskList @selectedTask="handleTask" :temporary_tasks="temporary_tasks" :selected_tasks="selectedTasks">
                         <span class="inline-flex items-center rounded-full bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-600 ring-1 ring-inset ring-gray-500/10">
                             You have no tasks!
                         </span>

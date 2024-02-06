@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watchEffect} from "vue";
 import { router } from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
-const { temporary_tasks } = defineProps(['temporary_tasks']);
+const props = defineProps(['temporary_tasks', 'selected_tasks']);
+const emit = defineEmits(['selectedTask']);
 const modal = ref(false);
 const taskId = ref();
 const taskName = ref('');
@@ -16,6 +17,17 @@ const layoutGrid = [
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
 ];
+const dataTasks = ref([]);
+watchEffect(() => {
+    if (props.temporary_tasks.data.length) {
+        dataTasks.value = props.temporary_tasks.data.map((item) => {
+            return {
+                ...item,
+                selected: props.selected_tasks.includes(item.id),
+            }
+        });
+    }
+})
 function onShowModal(idTemporaryTask, nameTemporaryTask) {
     taskId.value = idTemporaryTask;
     taskName.value = nameTemporaryTask;
@@ -25,13 +37,17 @@ function deleteTemporaryTask() {
     router.delete(route('temporary.destroy', taskId.value));
     onShowModal(null, '');
 }
-const selectedTask = (idTemporaryTask, currentFlag) => {
-    if (idTemporaryTask) {
-        router.patch(route('temporary.flag', idTemporaryTask), {flag: currentFlag});
+const selectedTask = (idTemporaryTask) => {
+    const index = dataTasks.value.findIndex((task) => task.id == idTemporaryTask)
+    if (index !== -1) {
+        dataTasks.value[index].selected = !dataTasks.value[index].selected;
+        emit('selectedTask', idTemporaryTask);
     }
 }
 const goToPage = (url) => {
-    router.visit(url);
+    router.visit(url, {
+        preserveState: true,
+    });
 }
 </script>
 
@@ -67,14 +83,14 @@ const goToPage = (url) => {
     </div>
     <div v-else class="p-6 text-gray-900">
 
-        <div v-for="task in temporary_tasks.data"
+        <div v-for="task in dataTasks"
              :key="task.id"
              class="grid shrink-0 my-2 px-2 items-center justify-center border-b-2 first:border-t-2"
              :class="layoutGrid"
         >
             <input type="checkbox"
-                   @click="selectedTask(task.id, task.flag)"
-                   :checked="task.flag"
+                   @click="selectedTask(task.id)"
+                   :checked="task.selected"
                    class="size-8 rounded-full cursor-pointer border-slate-400"
 
             />

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -54,7 +55,6 @@ class TemporaryTaskController extends Controller
 
     /**
      * Store a newly created temporary task in storage.
-     *
      * @param \App\Http\Requests\TemporaryTaskStoreRequest $request
      * @return
      */
@@ -91,10 +91,8 @@ class TemporaryTaskController extends Controller
 
     /**
      * Remove the specified temporary task from storage.
-     *
      * @param \App\Models\TemporaryTask $temporaryTask
      * @return \Illuminate\Http\RedirectResponse
-     *
      */
     public function destroy(TemporaryTask $temporaryTask)
     {
@@ -105,41 +103,31 @@ class TemporaryTaskController extends Controller
         ]);
     }
 
-    public function import(TemporaryTask $temporaryTask)
+    /**
+     * Import TemporaryTask to Task
+     * @param Request $request
+     * @param TemporaryTask $temporaryTask
+     * @return RedirectResponse
+     */
+    public function import(Request $request, TemporaryTask $temporaryTask)
     {
-        $cont = 0;
-        $temporary_tasks = $temporaryTask::all();
-        foreach ($temporary_tasks as $temporary_task) {
-            if ($temporary_task->flag === 1) {
-                $cont++;
+        if (isset($request->selected['_value'])) {
+            $temporary_tasks = TemporaryTask::find($request->selected['_value']);
+            foreach ($temporary_tasks as $temporary_task) {
                 Task::create($temporary_task->toArray());
             }
+            $temporary_tasks_ids = $temporary_tasks->pluck('id')->toArray();
+            TemporaryTask::whereIn('id', $temporary_tasks_ids)->delete();
         }
-        if ($cont == 0) {
+        else {
             return Redirect::route('temporary.index')->with([
                 'message' => 'Não selecionou nenhuma tarefa!',
                 'status' => 'warning',
             ]);
         }
-        TemporaryTask::truncate();
         return Redirect::route('dashboard')->with([
             'message' => 'Tarefas importadas com sucesso!',
             'status' => 'success',
         ]);
     }
-
-    public function flag(Request $request, TemporaryTask $temporaryTask)
-    {
-        $temporaryTask->update([
-            'flag' => !$request->input('flag'),
-        ]);
-        return Redirect::route('temporary.index');
-    }
-
-    public function all_task(Request $request)
-    {
-        TemporaryTask::query()->update(['flag' => $request->input('current')]);
-        return Redirect::route('temporary.index');
-    }
-
 }
