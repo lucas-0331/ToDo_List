@@ -21,23 +21,13 @@ class Task extends Model
     ];
 
     protected $casts = [
-        'date' => 'date'
+        'date' => 'date',
+        'status' => 'boolean'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function getStatusAttribute($value)
-    {
-        return (bool) $value;
-    }
-
-    public function getDateAttribute($value)
-    {
-        $carbonDate = is_string($value) ? Carbon::parse($value) : $value;
-        return $carbonDate instanceof Carbon ? $carbonDate->format('d/m/Y') : $value;
     }
 
     public function getImageAttribute($value)
