@@ -47,6 +47,12 @@ function onYesClick(idTask) {
     deleteTask(idTask);
     onShowModal();
 }
+function dateFormat(dateString) {
+    const date = new Date(dateString)
+    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+    const formatter = new Intl.DateTimeFormat('pt-BR', options);
+    return formatter.format(date);
+}
 </script>
 
 <template>
@@ -66,7 +72,7 @@ function onYesClick(idTask) {
             <p class="font-bold"
                :class="task.date"
             >
-                {{ task.date }}
+                {{ dateFormat(task.date) }}
             </p>
             <h3 class="font-bold">
                 {{ task.name }}
