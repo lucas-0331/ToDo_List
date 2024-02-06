@@ -2,19 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Mail\Contact;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\ContactRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class ContactController extends Controller
 {
-    public function send(Request $request)
+    public function index()
     {
-        $sent = Mail::to('teste@teste.com', $request->user()->name)->send(new Contact([
+        return Inertia::render('Task/Email');
+    }
+
+    /**
+     * @param ContactRequest $request
+     * @return RedirectResponse
+     */
+    public function send(ContactRequest $request)
+    {
+        $sent = Mail::to('teste@teste.com', 'Company')->send(new Contact([
             'name' => $request->user()->name,
             'email' => $request->user()->email,
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
         ]));
+
+        return Redirect::route('dashboard')->with([
+            'message' => 'Email send with success',
+            'status' => 'success',
+        ]);
     }
 }
