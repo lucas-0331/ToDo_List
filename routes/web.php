@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TemporaryTaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TemporaryTaskController;
 
 
 /*
@@ -45,9 +46,7 @@ Route::middleware(['auth', 'verified'])->name('temporary.')->group(function () {
     Route::get('temporary/{temporaryTask}/edit', [TemporaryTaskController::class, 'edit'])->name('edit');
     Route::patch('temporary/{temporaryTask}/update', [TemporaryTaskController::class, 'update'])->name('update');
     Route::delete('temporary/{temporaryTask}/destroy', [TemporaryTaskController::class, 'destroy'])->name('destroy');
-    Route::get('temporary/task/import', [TemporaryTaskController::class, 'import'])->name('import');
-    Route::patch('temporary/{temporaryTask}/flag', [TemporaryTaskController::class, 'flag'])->name('flag');
-    Route::patch('temporary/all_task', [TemporaryTaskController::class, 'all_task'])->name('all_task');
+    Route::post('temporary/task/import', [TemporaryTaskController::class, 'import'])->name('import');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
