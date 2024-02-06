@@ -33,7 +33,11 @@ Route::middleware(['auth', 'verified'])->name('task.')->group(function () {
     Route::delete('task/{task}/destroy', [TaskController::class, 'destroy'])->name('destroy');
     Route::patch('task/{task}/status', [TaskController::class, 'status'])->name('status');
 });
-Route::post('email/send', [\App\Http\Controllers\ContactController::class, 'send'])->name('send');
+
+Route::middleware(['auth', 'verified'])->name('email.')->group(function (){
+    Route::get('email/index', [ContactController::class, 'index'])->name('index');
+    Route::post('email/send', [ContactController::class, 'send'])->name('send');
+});
 
 Route::middleware(['auth', 'verified'])->name('temporary.')->group(function () {
     Route::get('temporary/task/index', [TemporaryTaskController::class, 'index'])->name('index');
