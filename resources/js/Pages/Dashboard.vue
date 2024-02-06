@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import TasksList from "@/Pages/Task/Components/TasksList.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -13,6 +13,9 @@ const modal = ref(false);
 function onShowModal() {
     return modal.value = !modal.value;
 }
+function onShowEmail() {
+    router.get(route('email.index'));
+}
 </script>
 
 <template>
@@ -23,6 +26,17 @@ function onShowModal() {
             <div class="flex justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Task</h2>
                 <div class="flex gap-3">
+                    <PrimaryButton @click.prevent="onShowEmail"
+                                   class="bg-green-500 text-white font-bold h-10 w-28 flex items-center justify-center rounded dark:hover:bg-green-600"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-forward" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 18h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
+                            <path d="M3 6l9 6l9 -6" />
+                            <path d="M15 18h6" />
+                            <path d="M18 15l3 3l-3 3" />
+                        </svg>
+                    </PrimaryButton>
                     <PrimaryButton @click.prevent="onShowModal"
                           class="bg-blue-500 text-white font-bold h-10 w-28 flex items-center justify-center rounded dark:hover:bg-gray-700"
                     >
