@@ -24,10 +24,6 @@ function handleTask(id) {
 function onSubmit() {
     router.post(route('temporary.import', {selected: selectedTasks}));
 }
-function allTemporaryTask() {
-    router.patch(route('temporary.all_task'), {current: current.value});
-    current.value = !current.value;
-}
 </script>
 
 <template>
@@ -35,20 +31,20 @@ function allTemporaryTask() {
     <AuthenticatedLayout>
     <template #header>
         <div v-show="temporary_tasks.data.length"
-             class="flex justify-between"
+             class="flex justify-end"
         >
-            <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Temporary Tasks</h2>
-                <button @click.prevent="allTemporaryTask"
-                        class="bg-blue-500 mt-4 text-white font-bold h-10 w-32 flex items-center justify-center rounded dark:hover:bg-blue-600"
-                >
-                    Select all Task
-                </button>
-            </div>
+<!--            <div>-->
+<!--                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Temporary Tasks</h2>-->
+<!--                <button @click.prevent="allTemporaryTask"-->
+<!--                        class="bg-blue-500 mt-4 text-white font-bold h-10 w-32 flex items-center justify-center rounded dark:hover:bg-blue-600"-->
+<!--                >-->
+<!--                    Select all Task-->
+<!--                </button>-->
+<!--            </div>-->
             <div class="flex">
 
                 <button @click.prevent="onSubmit"
-                        class="bg-blue-500 ml-2 text-white font-bold h-20 w-32 flex items-center justify-center rounded dark:hover:bg-blue-600"
+                        class="bg-blue-500 ml-2 text-white font-bold h-12 w-32 flex items-center justify-center rounded dark:hover:bg-blue-600"
                 >
                     <span>
                         Import to Task
