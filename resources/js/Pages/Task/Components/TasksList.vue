@@ -25,6 +25,7 @@ const newStatus = (idTask, currentStatus) => {
 }
 const deleteTask = (idTask) => {
     if(idTask) {
+        console.log(idTask);
         router.delete(route('task.destroy', idTask), {
             preserveState: false,
         });
@@ -68,6 +69,7 @@ function dateFormat(dateString) {
              class="grid shrink-0 my-2 px-2 items-center justify-center border-b-2 first:border-t-2"
              :class="layoutGrid"
         >
+
             <img loading="lazy" :src="task.image" :alt="task.description" class="rounded-full size-16">
             <p class="font-bold"
                :class="task.date"

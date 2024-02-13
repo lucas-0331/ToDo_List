@@ -63,6 +63,7 @@ class TaskController extends Controller
      */
     public function store(TaskCreateRequest $request): RedirectResponse
     {
+        dd($request);
         $data = $request->validated();
         $data['status'] = false;
         $data['user_id'] = auth()->id();
@@ -126,6 +127,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        dd($task);
         $task->delete();
         return Redirect::route('dashboard');
     }

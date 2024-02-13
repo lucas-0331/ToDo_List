@@ -22,7 +22,7 @@ class ContactController extends Controller
      */
     public function send(ContactRequest $request)
     {
-        $sent = Mail::to('teste@teste.com', 'Company')->send(new Contact([
+        $sent = Mail::to('teste@teste.com', 'Company')->later(now()->addSeconds(15), new Contact([
             'name' => $request->user()->name,
             'email' => $request->user()->email,
             'subject' => $request->input('subject'),
