@@ -4,15 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TaskCreateRequest extends FormRequest
+class TemporaryTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-//    public function authorize(): bool
-//    {
-//        return true;
-//    }
+    public function authorize(): bool
+    {
+        return auth()->check();
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,6 +22,7 @@ class TaskCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'flag' => ['boolean'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'date' => ['required'],

@@ -4,6 +4,8 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Modal from "@/Components/Modal.vue";
+import { ref } from "vue";
 
 const form = useForm({
     name: '',
@@ -12,9 +14,17 @@ const form = useForm({
     date: '',
     image: '',
 });
+const modal = ref(false);
 
 function onSubmit() {
     form.post(route('task.store'));
+}
+function onShowModal() {
+    modal.value = !modal.value;
+}
+function onYesClick() {
+    onSubmit();
+    onShowModal();
 }
 </script>
 
@@ -86,7 +96,30 @@ function onSubmit() {
                 <InputError class="mt-2" :message="form.errors.image" />
             </div>
 
-            <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+            <PrimaryButton @click.prevent="onShowModal">Save</PrimaryButton>
+
+            <Modal :show="modal">
+                <div class="text-center pt-2 font-bold">
+                    <p>
+                        Do you really want to create this new task?
+                    </p>
+                </div>
+                <div class="flex justify-between p-3">
+                    <PrimaryButton
+                        class="bg-green-600"
+                        @click="onYesClick"
+                    >
+                        Yes
+                    </PrimaryButton>
+
+                    <PrimaryButton
+                        class="bg-red-700"
+                        @click.prevent="onShowModal"
+                    >
+                        Cancel
+                    </PrimaryButton>
+                </div>
+            </Modal>
 
         </form>
     </section>

@@ -4,15 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TaskCreateRequest extends FormRequest
+class ContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-//    public function authorize(): bool
-//    {
-//        return true;
-//    }
+    public function authorize(): bool
+    {
+        return auth()->check();
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,12 +22,15 @@ class TaskCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'date' => ['required'],
-            'status' => ['boolean'],
-            'image' => ['string', 'nullable'],
-            'user_id' => ['exists:users,id'],
+            'subject' => ['required', 'string'],
+            'message' => ['required', 'max:500', 'string'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+//            'message.max' => 'Não pode ultrapassar 500 caracteres.'
         ];
     }
 }

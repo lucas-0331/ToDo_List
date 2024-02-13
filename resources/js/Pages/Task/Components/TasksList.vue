@@ -1,5 +1,8 @@
 <script setup>
-import {router} from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
+import Modal from "@/Components/Modal.vue";
+import { ref } from "vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 defineProps({
     tasks: {
@@ -7,6 +10,7 @@ defineProps({
         required: true,
     },
 });
+const modal = ref(false);
 const layoutGrid = [
     'grid-cols-[100px_100px_100px_100px_100px]',
     'md:grid-cols-[100px_100px_180px_1fr_100px_100px]',
@@ -14,8 +18,14 @@ const layoutGrid = [
     'md:grid-rows-[minmax(100px,_180px)]',
     'lg:grid-rows-[minmax(50px,_85px)]',
 ];
+const newStatus = (idTask, currentStatus) => {
+    if(idTask) {
+        router.patch(route('task.status', idTask), {status: currentStatus});
+    }
+}
 const deleteTask = (idTask) => {
     if(idTask) {
+        console.log(idTask);
         router.delete(route('task.destroy', idTask), {
             preserveState: false,
         });
@@ -31,6 +41,19 @@ const showTask = (idTask) => {
         router.get(route('task.show', idTask));
     }
 }
+function onShowModal() {
+    modal.value = !modal.value;
+}
+function onYesClick(idTask) {
+    deleteTask(idTask);
+    onShowModal();
+}
+function dateFormat(dateString) {
+    const date = new Date(dateString)
+    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+    const formatter = new Intl.DateTimeFormat('pt-BR', options);
+    return formatter.format(date);
+}
 </script>
 
 <template>
@@ -41,16 +64,17 @@ const showTask = (idTask) => {
     </div>
 
     <div v-else class="p-6 text-gray-900">
-        <div v-for="(task, index) in tasks"
+        <div v-for="task in tasks"
              :key="task.id"
              class="grid shrink-0 my-2 px-2 items-center justify-center border-b-2 first:border-t-2"
              :class="layoutGrid"
         >
+
             <img loading="lazy" :src="task.image" :alt="task.description" class="rounded-full size-16">
             <p class="font-bold"
                :class="task.date"
             >
-                {{ task.date }}
+                {{ dateFormat(task.date) }}
             </p>
             <h3 class="font-bold">
                 {{ task.name }}
@@ -59,10 +83,12 @@ const showTask = (idTask) => {
                 {{ task.description }}
             </p>
             <input type="checkbox"
-                   v-model="task.status"
+                   @click="newStatus(task.id, task.status)"
+                   :checked="task.status"
                    class="justify-self-center size-8 rounded-full cursor-pointer"
             >
             <div class="button-container grid grid-cols-3 justify-center items-center gap-2">
+
                 <button @click="showTask(task.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6E6E6E" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -78,7 +104,7 @@ const showTask = (idTask) => {
                         <path d="M16 5l3 3" />
                     </svg>
                 </button>
-                <button @click="deleteTask(task.id)">
+                <button @click.prevent="onShowModal">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#D32500" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <path d="M4 7l16 0" />
@@ -88,7 +114,32 @@ const showTask = (idTask) => {
                         <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                     </svg>
                 </button>
+
+                <Modal :show="modal">
+                    <div class="text-center pt-2 font-bold">
+                        <p>
+                            Do you really want to delete this task?
+                        </p>
+                    </div>
+                    <div class="flex justify-between p-3">
+                        <PrimaryButton
+                            class="bg-green-600"
+                            @click.prevent="onYesClick(task.id)"
+                        >
+                            Yes
+                        </PrimaryButton>
+
+                        <PrimaryButton
+                            class="bg-red-700"
+                            @click.prevent="onShowModal"
+                        >
+                            Cancel
+                        </PrimaryButton>
+                    </div>
+                </Modal>
+
             </div>
         </div>
     </div>
+
 </template>

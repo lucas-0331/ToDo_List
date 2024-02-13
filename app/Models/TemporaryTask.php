@@ -3,26 +3,27 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Task extends Model
+class TemporaryTask extends Model
 {
     use HasFactory;
-    protected $table = 'tasks';
+    protected $table = 'temporary_tasks';
 
     protected $fillable = [
+        'flag',
         'name',
         'description',
         'date',
-        'image',
         'status',
+        'image',
         'user_id',
     ];
 
     protected $casts = [
         'date' => 'date',
-        'status' => 'boolean'
     ];
 
     public function user()
@@ -30,7 +31,7 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getImageAttribute($value)
+    public function setImageAttribute($value)
     {
         return $value ?? asset('storage/img/no_image.png');
     }
