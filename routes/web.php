@@ -25,6 +25,10 @@ Route::get('/dashboard', [TaskController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
+});
 Route::middleware(['auth', 'verified'])->name('task.')->group(function () {
     Route::get('task/create', [TaskController::class, 'create'])->name('create');
     Route::post('task/store', [TaskController::class, 'store'])->name('store');
