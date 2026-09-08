@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import UpdateTemporaryTaskForm from "@/Pages/Task/Partials/UpdateTemporaryTaskForm.vue";
 
